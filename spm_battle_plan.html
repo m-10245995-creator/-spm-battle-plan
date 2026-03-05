@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPM Ultimate Battle Plan</title>
+<meta name="description" content="SPM Ultimate Battle Plan — Full week study schedule with Pomodoro timer and session alerts.">
+<meta name="theme-color" content="#e8c84a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SPM Plan">
+<meta name="mobile-web-app-capable" content="yes">
+<link id="pwa-manifest" rel="manifest">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0d;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #1e2330;
+    --accent: #e8c84a;
+    --accent2: #ff5a36;
+    --accent3: #3de8a0;
+    --accent4: #5b9cf6;
+    --text: #e8eaf0;
+    --text-muted: #7a8099;
+    --red: #ff5a36;
+    --green: #3de8a0;
+    --blue: #5b9cf6;
+    --yellow: #e8c84a;
+    --purple: #b57af5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 64px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: 'SPM';
+    position: absolute;
+    right: -20px;
+    top: -10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 280px;
+    color: rgba(232,200,74,0.04);
+    pointer-events: none;
+    line-height: 1;
+    letter-spacing: -4px;
+  }
+
+  .header-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    line-height: 0.9;
+    letter-spacing: 1px;
+    color: var(--text);
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  h1 span {
+    color: var(--accent);
+    display: block;
+  }
+
+  .header-sub {
+    margin-top: 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 560px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .header-rule {
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    margin: 40px 0;
+    animation: expand 0.8s ease 0.3s both;
+    transform-origin: left;
+  }
+
+  /* ── LIVE CLOCK ── */
+  .clock-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .clock-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(232,200,74,0.3);
+  }
+
+  .clock-display .colon {
+    animation: blink 1s step-end infinite;
+    display: inline-block;
+  }
+
+  .clock-right {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .clock-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .clock-session {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  .session-morning  { background: rgba(232,200,74,0.12);  color: var(--yellow); border: 1px solid rgba(232,200,74,0.3); }
+  .session-study    { background: rgba(91,156,246,0.12);  color: var(--blue);   border: 1px solid rgba(91,156,246,0.3); }
+  .session-evening  { background: rgba(61,232,160,0.12);  color: var(--green);  border: 1px solid rgba(61,232,160,0.3); }
+  .session-rest     { background: rgba(255,90,54,0.10);   color: var(--red);    border: 1px solid rgba(255,90,54,0.25); }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 32px;
+    background: var(--accent);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  .section-title.red::before { background: var(--red); }
+  .section-title.green::before { background: var(--green); }
+  .section-title.blue::before { background: var(--blue); }
+  .section-title.purple::before { background: var(--purple); }
+
+  section {
+    margin-bottom: 60px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  /* ── PRINCIPLES GRID ── */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .principle-item {
+    background: var(--surface);
+    padding: 20px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: background 0.2s;
+  }
+
+  .principle-item:hover { background: var(--surface2); }
+
+  .principle-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+  }
+
+  .principle-text {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.55;
+    padding-top: 4px;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--surface2);
+  }
+
+  thead th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 12px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+
+  td {
+    padding: 13px 18px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  .day-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    width: 100px;
+  }
+
+  /* Subject badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .badge-bio    { background: rgba(61,232,160,0.12); color: var(--green); border: 1px solid rgba(61,232,160,0.25); }
+  .badge-add    { background: rgba(232,200,74,0.12);  color: var(--yellow); border: 1px solid rgba(232,200,74,0.25); }
+  .badge-chem   { background: rgba(255,90,54,0.12);   color: var(--red);    border: 1px solid rgba(255,90,54,0.25); }
+  .badge-phys   { background: rgba(91,156,246,0.12);  color: var(--blue);   border: 1px solid rgba(91,156,246,0.25); }
+  .badge-maths  { background: rgba(181,122,245,0.12); color: var(--purple); border: 1px solid rgba(181,122,245,0.25); }
+  .badge-eng    { background: rgba(232,200,74,0.10);  color: #f0d060;       border: 1px solid rgba(232,200,74,0.2); }
+  .badge-bm     { background: rgba(91,156,246,0.10);  color: #80b4ff;       border: 1px solid rgba(91,156,246,0.2); }
+  .badge-sej    { background: rgba(255,90,54,0.10);   color: #ff8f78;       border: 1px solid rgba(255,90,54,0.2); }
+  .badge-core   { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border); }
+
+  .dur-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  /* ── WEEKEND TABLE row accent ── */
+  tr.weekend-sat { --row-accent: var(--yellow); }
+  tr.weekend-sun { --row-accent: var(--blue); }
+
+  .day-label.sat { color: var(--yellow); }
+  .day-label.sun { color: var(--blue); }
+
+  /* ── EVENING BLOCK ── */
+  .evening-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+
+  .ev-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .ev-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .ev-text {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .ev-text strong {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-size: 13px;
+  }
+
+  /* ── MISTAKE LOG ── */
+  .codes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .code-item {
+    background: var(--surface);
+    padding: 16px 18px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .code-item:hover { background: var(--surface2); }
+
+  .code-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 36px;
+    background: rgba(232,200,74,0.1);
+    border: 1px solid rgba(232,200,74,0.2);
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-align: center;
+  }
+
+  .code-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ── BRUTAL RULES ── */
+  .rules-list {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+
+  .rules-list li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 14px 18px;
+    font-size: 14px;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: background 0.2s, border-left-color 0.2s;
+  }
+
+  .rules-list li:hover {
+    background: var(--surface2);
+    border-left-color: var(--yellow);
+  }
+
+  .rule-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--red);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── BRUTAL TRUTH CALLOUT ── */
+  .brutal-truth {
+    background: linear-gradient(135deg, rgba(255,90,54,0.08), rgba(232,200,74,0.06));
+    border: 1px solid rgba(255,90,54,0.3);
+    border-radius: 8px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brutal-truth::before {
+    content: '💀';
+    position: absolute;
+    right: 24px;
+    top: 20px;
+    font-size: 48px;
+    opacity: 0.15;
+  }
+
+  .brutal-truth h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brutal-truth ul {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+
+  .brutal-truth ul li {
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    gap: 10px;
+    line-height: 1.55;
+  }
+
+  .brutal-truth ul li::before {
+    content: '→';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ── TIME INDICATOR ── */
+  .time-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(232,200,74,0.08);
+    border: 1px solid rgba(232,200,74,0.2);
+    padding: 4px 10px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  /* ── POMODORO TIMER ── */
+  .pomo-section {
+    margin-bottom: 60px;
+    animation: fadeUp 0.5s ease 0.35s both;
+  }
+
+  .pomo-tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--border);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  .pomo-tab {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: none;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .pomo-tab:hover { background: var(--surface2); color: var(--text); }
+
+  .pomo-tab.active-heavy {
+    background: rgba(232,200,74,0.1);
+    color: var(--yellow);
+    border-bottom: 2px solid var(--yellow);
+  }
+
+  .pomo-tab.active-light {
+    background: rgba(91,156,246,0.1);
+    color: var(--blue);
+    border-bottom: 2px solid var(--blue);
+  }
+
+  .pomo-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    padding: 32px 28px 28px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .pomo-body.visible { display: flex; }
+
+  .pomo-info {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .pomo-info-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .pomo-info-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .pomo-info-card .val { font-weight: 600; }
+  .pomo-info-card .val.yellow { color: var(--yellow); }
+  .pomo-info-card .val.blue   { color: var(--blue); }
+  .pomo-info-card .val.green  { color: var(--green); }
+
+  /* Ring timer */
+  .pomo-ring-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+  }
+
+  .pomo-ring-wrap svg {
+    transform: rotate(-90deg);
+    width: 200px;
+    height: 200px;
+  }
+
+  .pomo-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+
+  .pomo-ring-progress {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.9s linear, stroke 0.4s;
+  }
+
+  .pomo-ring-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .pomo-countdown {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .pomo-phase-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .pomo-block-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .block-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  .block-dot.done-heavy { background: var(--yellow); border-color: var(--yellow); }
+  .block-dot.done-light { background: var(--blue); border-color: var(--blue); }
+  .block-dot.active-dot { background: transparent; border-color: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse-dot 1s infinite; }
+
+  @keyframes pulse-dot {
+    0%,100% { box-shadow: 0 0 4px var(--green); }
+    50%      { box-shadow: 0 0 12px var(--green); }
+  }
+
+  .pomo-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .pomo-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 700;
+  }
+
+  .pomo-btn-start {
+    background: var(--accent);
+    color: #000;
+  }
+  .pomo-btn-start:hover { background: #f5d650; transform: translateY(-1px); }
+
+  .pomo-btn-reset {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .pomo-btn-reset:hover { color: var(--text); background: var(--border); }
+
+  .pomo-btn-start.running {
+    background: var(--red);
+    color: #fff;
+  }
+  .pomo-btn-start.running:hover { background: #ff7055; }
+
+  .pomo-status-msg {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    font-style: italic;
+    min-height: 20px;
+  }
+
+  /* ── NOTIFICATION BUTTON ── */
+  .notif-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(232,200,74,0.1);
+    color: var(--yellow);
+    border: 1px solid rgba(232,200,74,0.3);
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+    display: inline-block;
+  }
+  .notif-btn:hover { background: rgba(232,200,74,0.2); }
+  .notif-btn.granted { background: rgba(61,232,160,0.1); color: var(--green); border-color: rgba(61,232,160,0.3); cursor: default; }
+  .notif-btn.denied  { background: rgba(255,90,54,0.1);  color: var(--red);   border-color: rgba(255,90,54,0.3);  cursor: default; }
+
+  .install-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(61,232,160,0.1);
+    color: var(--green);
+    border: 1px solid rgba(61,232,160,0.3);
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+    display: none;
+  }
+  .install-btn:hover { background: rgba(61,232,160,0.2); }
+  .install-btn.visible { display: inline-block; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes expand {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* Staggered section animations */
+  section:nth-child(1) { animation-delay: 0.1s; }
+  section:nth-child(2) { animation-delay: 0.2s; }
+  section:nth-child(3) { animation-delay: 0.3s; }
+  section:nth-child(4) { animation-delay: 0.4s; }
+  section:nth-child(5) { animation-delay: 0.5s; }
+  section:nth-child(6) { animation-delay: 0.6s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    td { padding: 10px 12px; }
+    thead th { padding: 10px 12px; }
+    .evening-card { padding: 18px; }
+    .brutal-truth { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="header-tag">📚 Study Framework · SPM 2025</div>
+    <h1>Ultimate<span>Battle Plan</span></h1>
+    <p class="header-sub">Full week schedule — Weekdays + Weekends. Core subjects + English / BM / Sejarah. Structured for maximum marks retention.</p>
+
+    <div class="clock-bar">
+      <div class="clock-display">
+        <span id="ch">00</span><span class="colon">:</span><span id="cm">00</span><span class="colon">:</span><span id="cs">00</span>
+      </div>
+      <div class="clock-right">
+        <div class="clock-date" id="clock-date">—</div>
+        <div class="clock-session" id="clock-session">Loading...</div>
+        <button class="notif-btn" id="notif-btn" onclick="requestNotifPermission()">🔔 Enable Alerts</button>
+        <button class="install-btn" id="install-btn" onclick="installPWA()">📲 Install App</button>
+      </div>
+    </div>
+
+    <div class="header-rule"></div>
+  </header>
+
+  <!-- ── KEY PRINCIPLES ── -->
+  <section>
+    <div class="section-title">Key Principles</div>
+    <div class="principles-grid">
+      <div class="principle-item">
+        <div class="principle-num">1</div>
+        <div class="principle-text">Weekdays: core subjects (Bio, Add Maths, Maths, Chemistry, Physics) — 1.5 hr priority + 0.5 hr secondary every morning.</div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">2</div>
+        <div class="principle-text">Weekends: maintain core priority + include weaker/other subjects (English, BM, Sejarah).</div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">3</div>
+        <div class="principle-text">Evening sessions: review + mistake log update + reinforcement only. No new heavy content.</div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">4</div>
+        <div class="principle-text">Active recall for all subjects; MCQs and structured questions for core subjects daily.</div>
+      </div>
+      <div class="principle-item">
+        <div class="principle-num">5</div>
+        <div class="principle-text">Use <code style="color:var(--accent);background:rgba(232,200,74,0.1);padding:1px 5px;border-radius:2px;font-family:'JetBrains Mono',monospace">?</code> in morning for uncertain answers, log mistakes after teacher check.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WEEKDAY MORNING ── -->
+  <section>
+    <div class="section-title">Weekday Morning Schedule</div>
+    <div class="time-chip">⏰ 4:00 – 4:30 a.m. &nbsp;|&nbsp; 🍳 Light Breakfast & Workout</div>
+    <div class="time-chip" style="margin-left:8px">⭐ 4:30 – 6:30 a.m. &nbsp;|&nbsp; 2 hrs study</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Priority Subject <span style="color:var(--accent)">(1.5 hr)</span></th>
+            <th>Secondary Subject <span style="color:var(--text-muted)">(0.5 hr)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="day-label">MON</div></td>
+            <td><span class="badge badge-bio">🧬 Biology</span></td>
+            <td><span class="badge badge-chem">⚗️ Chemistry</span></td>
+          </tr>
+          <tr>
+            <td><div class="day-label">TUE</div></td>
+            <td><span class="badge badge-add">✏️ Add Maths</span></td>
+            <td><span class="badge badge-phys">⚡ Physics</span></td>
+          </tr>
+          <tr>
+            <td><div class="day-label">WED</div></td>
+            <td><span class="badge badge-bio">🧬 Biology</span></td>
+            <td><span class="badge badge-maths">🔢 Maths</span></td>
+          </tr>
+          <tr>
+            <td><div class="day-label">THU</div></td>
+            <td><span class="badge badge-add">✏️ Add Maths</span></td>
+            <td><span class="badge badge-chem">⚗️ Chemistry</span></td>
+          </tr>
+          <tr>
+            <td><div class="day-label">FRI</div></td>
+            <td><span class="badge badge-bio">🧬 Biology</span></td>
+            <td><span class="badge badge-phys">⚡ Physics</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── WEEKDAY EVENING ── -->
+  <section>
+    <div class="section-title blue">Weekday Evening Sessions</div>
+    <div class="time-chip" style="border-color:rgba(91,156,246,0.3);color:var(--blue);background:rgba(91,156,246,0.08)">⏰ 6:00 – 7:15 p.m. &nbsp;|&nbsp; 30–45 min strictly</div>
+    <div class="evening-card">
+      <div class="ev-item">
+        <div class="ev-icon">📝</div>
+        <div class="ev-text"><strong>Mistake Log Update</strong>Update log with teacher feedback from the day's morning session.</div>
+      </div>
+      <div class="ev-item">
+        <div class="ev-icon">🎯</div>
+        <div class="ev-text"><strong>Weak Point Reinforcement</strong>Focus on weak areas from priority + secondary subjects.</div>
+      </div>
+      <div class="ev-item">
+        <div class="ev-icon">🃏</div>
+        <div class="ev-text"><strong>Active Tools</strong>Slides, diagrams, formulas, and flashcards only — no new heavy questions.</div>
+      </div>
+      <div class="ev-item">
+        <div class="ev-icon">⏱️</div>
+        <div class="ev-text"><strong>Strict Timing</strong>30–45 minutes hard stop. Overrunning hurts sleep and next-day performance.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── POMODORO TIMER ── -->
+  <div class="pomo-section">
+    <div class="section-title">Pomodoro Timer</div>
+
+    <div class="pomo-tabs">
+      <button class="pomo-tab active-heavy" onclick="switchMode('heavy')">🔥 Morning Heavy (50/10)</button>
+      <button class="pomo-tab" onclick="switchMode('light')">🃏 Evening Light (25/5)</button>
+    </div>
+
+    <!-- HEAVY MODE -->
+    <div class="pomo-body visible" id="pomo-heavy">
+      <div class="pomo-info">
+        <div class="pomo-info-card">
+          <div class="label">Mode</div>
+          <div class="val yellow">50 min Focus + 10 min Break</div>
+        </div>
+        <div class="pomo-info-card">
+          <div class="label">Priority Subject</div>
+          <div class="val yellow">2 blocks (50+50) = 1.5 hr</div>
+        </div>
+        <div class="pomo-info-card">
+          <div class="label">Secondary Subject</div>
+          <div class="val yellow">1 block (50 min) = 0.5 hr</div>
+        </div>
+        <div class="pomo-info-card">
+          <div class="label">Use For</div>
+          <div class="val">MCQs / Structured Qs / Heavy Reasoning</div>
+        </div>
+      </div>
+
+      <div class="pomo-ring-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle class="pomo-ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="pomo-ring-progress" id="ring-h" cx="100" cy="100" r="88"
+            stroke="var(--yellow)"
+            stroke-dasharray="553"
+            stroke-dashoffset="0"/>
+        </svg>
+        <div class="pomo-ring-center">
+          <div class="pomo-countdown" id="countdown-h" style="color:var(--yellow)">50:00</div>
+          <div class="pomo-phase-label" id="phase-h" style="color:var(--text-muted)">READY</div>
+        </div>
+      </div>
+
+      <div class="pomo-block-dots" id="dots-h"></div>
+
+      <div class="pomo-controls">
+        <button class="pomo-btn pomo-btn-start" id="btn-h" onclick="toggleTimer('h')">START</button>
+        <button class="pomo-btn pomo-btn-reset" onclick="resetTimer('h')">RESET</button>
+      </div>
+      <div class="pomo-status-msg" id="msg-h">Press START to begin your 50-min focus block.</div>
+    </div>
+
+    <!-- LIGHT MODE -->
+    <div class="pomo-body" id="pomo-light">
+      <div class="pomo-info">
+        <div class="pomo-info-card">
+          <div class="label">Mode</div>
+          <div class="val blue">25 min Focus + 5 min Break</div>
+        </div>
+        <div class="pomo-info-card">
+          <div class="label">Session Length</div>
+          <div class="val blue">30–45 min total</div>
+        </div>
+        <div class="pomo-info-card">
+          <div class="label">Use For</div>
+          <div class="val">Slides · Diagrams · Flashcards · Review</div>
+        </div>
+      </div>
+
+      <div class="pomo-ring-wrap">
+        <svg viewBox="0 0 200 200">
+          <circle class="pomo-ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="pomo-ring-progress" id="ring-l" cx="100" cy="100" r="88"
+            stroke="var(--blue)"
+            stroke-dasharray="553"
+            stroke-dashoffset="0"/>
+        </svg>
+        <div class="pomo-ring-center">
+          <div class="pomo-countdown" id="countdown-l" style="color:var(--blue)">25:00</div>
+          <div class="pomo-phase-label" id="phase-l" style="color:var(--text-muted)">READY</div>
+        </div>
+      </div>
+
+      <div class="pomo-block-dots" id="dots-l"></div>
+
+      <div class="pomo-controls">
+        <button class="pomo-btn pomo-btn-start" id="btn-l" onclick="toggleTimer('l')" style="background:var(--blue);color:#fff">START</button>
+        <button class="pomo-btn pomo-btn-reset" onclick="resetTimer('l')">RESET</button>
+      </div>
+      <div class="pomo-status-msg" id="msg-l">Press START to begin your 25-min review block.</div>
+    </div>
+  </div>
+
+  <!-- ── WEEKEND SCHEDULE ── -->
+  <section>
+    <div class="section-title green">Weekend Full-Length & Other Subjects</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Session</th>
+            <th>Subject</th>
+            <th>Task</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="weekend-sat">
+            <td><div class="day-label sat">SAT</div></td>
+            <td style="color:var(--text-muted);font-size:13px">Morning</td>
+            <td><span class="badge badge-chem">⚗️ Chemistry</span></td>
+            <td style="font-size:13.5px">Section C full structured questions</td>
+            <td><span class="dur-tag">1–2 hrs</span></td>
+          </tr>
+          <tr class="weekend-sat">
+            <td></td>
+            <td style="color:var(--text-muted);font-size:13px">Morning</td>
+            <td><span class="badge badge-add">✏️ Add Maths</span></td>
+            <td style="font-size:13.5px">Section C practice</td>
+            <td><span class="dur-tag">1 hr</span></td>
+          </tr>
+          <tr class="weekend-sat">
+            <td></td>
+            <td style="color:var(--text-muted);font-size:13px">Late Morning</td>
+            <td><span class="badge badge-eng">📖 English</span></td>
+            <td style="font-size:13.5px">Comprehension / Grammar / Summary</td>
+            <td><span class="dur-tag">1–2 hrs</span></td>
+          </tr>
+          <tr class="weekend-sat">
+            <td></td>
+            <td style="color:var(--text-muted);font-size:13px">Evening</td>
+            <td><span class="badge badge-core">Core Subjects</span></td>
+            <td style="font-size:13.5px">Reinforce mistakes &amp; formulas</td>
+            <td><span class="dur-tag">30–45 min</span></td>
+          </tr>
+          <tr class="weekend-sun" style="border-top:2px solid var(--border)">
+            <td><div class="day-label sun">SUN</div></td>
+            <td style="color:var(--text-muted);font-size:13px">Morning</td>
+            <td><span class="badge badge-phys">⚡ Physics</span></td>
+            <td style="font-size:13.5px">Structured questions</td>
+            <td><span class="dur-tag">1 hr</span></td>
+          </tr>
+          <tr class="weekend-sun">
+            <td></td>
+            <td style="color:var(--text-muted);font-size:13px">Morning</td>
+            <td><span class="badge badge-maths">🔢 Maths</span></td>
+            <td style="font-size:13.5px">Structured questions</td>
+            <td><span class="dur-tag">1 hr</span></td>
+          </tr>
+          <tr class="weekend-sun">
+            <td></td>
+            <td style="color:var(--text-muted);font-size:13px">Late Morning</td>
+            <td><span class="badge badge-bm">🖊️ BM</span> &nbsp;<span class="badge badge-sej">📜 Sejarah</span></td>
+            <td style="font-size:13.5px">Essay practice / Key questions</td>
+            <td><span class="dur-tag">1–2 hrs</span></td>
+          </tr>
+          <tr class="weekend-sun">
+            <td></td>
+            <td style="color:var(--text-muted);font-size:13px">Evening</td>
+            <td><span class="badge badge-core">Core Subjects</span></td>
+            <td style="font-size:13.5px">Reinforce mistakes &amp; formulas</td>
+            <td><span class="dur-tag">30–45 min</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── MISTAKE LOG ── -->
+  <section>
+    <div class="section-title purple">Mistake Log Protocol</div>
+    <div class="codes-grid">
+      <div class="code-item"><div class="code-key">C</div><div class="code-desc">Concept gap — misunderstood theory</div></div>
+      <div class="code-item"><div class="code-key">R</div><div class="code-desc">Reading error — misread question</div></div>
+      <div class="code-item"><div class="code-key">M</div><div class="code-desc">Memory lapse — forgot fact/formula</div></div>
+      <div class="code-item"><div class="code-key">G</div><div class="code-desc">Guess — no idea, needs study</div></div>
+      <div class="code-item"><div class="code-key">KW</div><div class="code-desc">Command Word mistake — wrong answer type</div></div>
+    </div>
+    <div class="evening-card" style="gap:14px">
+      <div class="ev-item">
+        <div class="ev-icon">❓</div>
+        <div class="ev-text"><strong>Mark Uncertain</strong>Use <code style="color:var(--accent);background:rgba(232,200,74,0.1);padding:1px 5px;border-radius:2px;font-family:'JetBrains Mono',monospace">?</code> in morning session for answers you're unsure about.</div>
+      </div>
+      <div class="ev-item">
+        <div class="ev-icon">🔄</div>
+        <div class="ev-text"><strong>Daily Review</strong>Evening: log all <code style="color:var(--accent);background:rgba(232,200,74,0.1);padding:1px 5px;border-radius:2px;font-family:'JetBrains Mono',monospace">?</code> items after teacher check with correct code.</div>
+      </div>
+      <div class="ev-item">
+        <div class="ev-icon">🔁</div>
+        <div class="ev-text"><strong>Repeated Mistakes Priority</strong>Any mistake appearing 2+ times gets immediately promoted to flashcard + diagram review.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BRUTAL RULES ── -->
+  <section>
+    <div class="section-title red">Brutal Rules</div>
+    <ul class="rules-list">
+      <li><span class="rule-num">01</span>Weekdays = full core subject focus. Zero distractions, zero compromises.</li>
+      <li><span class="rule-num">02</span>Weekends = core priority + weak/other subjects. Core subjects cannot be skipped under any circumstance.</li>
+      <li><span class="rule-num">03</span>Stick strictly to time allocations. Every deviation is marks lost in the exam hall.</li>
+      <li><span class="rule-num">04</span>MCQs split into daily chunks. Structured questions rotate chapters and topics every session.</li>
+      <li><span class="rule-num">05</span>Sleep, exercise, and nutrition are non-negotiable. They directly determine focus and memory consolidation.</li>
+    </ul>
+  </section>
+
+  <!-- ── BRUTAL TRUTH ── -->
+  <section>
+    <div class="brutal-truth">
+      <h3>💀 Brutal Truth</h3>
+      <ul>
+        <li>Weekdays = peak brain time. Bio and Add Maths take the top slot because they demand the most cognitive load. Do not flip this order.</li>
+        <li>Weekends = reinforce core subjects first, then use the remaining windows to close the gap on English, BM, and Sejarah.</li>
+        <li>Follow this plan precisely and you will cover every SPM subject efficiently while maintaining maximum marks potential in your priority subjects.</li>
+        <li>Skipping one morning session doesn't just cost that day — it compounds backwards through your mistake log and forward into exam performance.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    SPM ULTIMATE BATTLE PLAN &nbsp;·&nbsp; FULL WEEK EDITION &nbsp;·&nbsp; STAY CONSISTENT &nbsp;·&nbsp; EVERY SESSION COUNTS
+  </footer>
+
+</div>
+
+<script>
+  // ── PWA SETUP ──
+  (function() {
+    // Inline manifest via blob
+    const manifest = {
+      name: 'SPM Ultimate Battle Plan',
+      short_name: 'SPM Plan',
+      description: 'Full week SPM study schedule with Pomodoro timer and session alerts.',
+      start_url: '.',
+      display: 'standalone',
+      background_color: '#0a0b0d',
+      theme_color: '#e8c84a',
+      orientation: 'portrait-primary',
+      icons: [
+        { src: generateIcon(192), sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+        { src: generateIcon(512), sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+      ]
+    };
+
+    function generateIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#0a0b0d';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = '#e8c84a';
+      ctx.font = `bold ${size * 0.55}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('📚', size / 2, size / 2);
+      return canvas.toDataURL('image/png');
+    }
+
+    // Set manifest link
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
+
+    // Register inline service worker via blob
+    const swCode = `
+      const CACHE = 'spm-plan-v1';
+      self.addEventListener('install', e => {
+        self.skipWaiting();
+      });
+      self.addEventListener('activate', e => {
+        e.waitUntil(clients.claim());
+      });
+      self.addEventListener('fetch', e => {
+        e.respondWith(
+          caches.match(e.request).then(r => r || fetch(e.request).catch(() => new Response('Offline')))
+        );
+      });
+      // Schedule notifications via postMessage
+      self.addEventListener('message', e => {
+        if (e.data && e.data.type === 'SCHEDULE_NOTIFS') {
+          // handled by page
+        }
+      });
+    `;
+
+    if ('serviceWorker' in navigator) {
+      const swBlob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swUrl, { scope: './' })
+        .then(reg => {
+          console.log('SW registered:', reg.scope);
+        })
+        .catch(err => console.warn('SW registration failed:', err));
+    }
+  })();
+
+  // ── PWA INSTALL PROMPT ──
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById('install-btn');
+    btn.classList.add('visible');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    document.getElementById('install-btn').style.display = 'none';
+    sendNotif('✅ App Installed!', 'SPM Battle Plan is now on your device. Keep it open for alerts to fire!');
+  });
+
+  function installPWA() {
+    if (!deferredPrompt) {
+      alert('To install:\n\nChrome/Edge: Click the ⊕ or ⋮ menu → "Install app"\nSafari (iPhone): Tap Share → "Add to Home Screen"');
+      return;
+    }
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice => {
+      if (choice.outcome === 'accepted') {
+        document.getElementById('install-btn').classList.remove('visible');
+      }
+      deferredPrompt = null;
+    });
+  }
+
+  // ── NOTIFICATIONS ──
+  const SCHEDULE = [
+    { h: 4,  m: 0,  title: '🍳 Wake Up!',               body: 'Time for light breakfast & workout. Fuel up before the grind.' },
+    { h: 4,  m: 30, title: '⭐ Morning Study START',      body: 'Lock in. Priority subject — 50 min focus block. No distractions.' },
+    { h: 6,  m: 30, title: '📚 Study Session Done',       body: 'Morning study complete. Get ready for school.' },
+    { h: 8,  m: 0,  title: '🏫 School Time',              body: 'Stay sharp in class. Take notes, ask questions.' },
+    { h: 15, m: 0,  title: '🏠 School Done!',             body: 'Back home. Rest up before evening review.' },
+    { h: 18, m: 0,  title: '🌆 Evening Review — START',   body: 'Update your mistake log. Use slides & flashcards. 30–45 min only.' },
+    { h: 19, m: 15, title: '📖 Homework Time',            body: 'Evening review done. Switch to homework now.' },
+    { h: 21, m: 0,  title: '🌙 Wind Down',                body: 'Homework done. Prepare for sleep. Early rise tomorrow.' },
+    { h: 22, m: 0,  title: '😴 Sleep Now',                body: 'Lights off. Your brain consolidates memory during sleep. Rest is non-negotiable.' },
+  ];
+
+  let notifEnabled = false;
+  let lastNotifKey = '';
+
+  function requestNotifPermission() {
+    if (!('Notification' in window)) {
+      alert('Your browser does not support notifications.');
+      return;
+    }
+    Notification.requestPermission().then(perm => {
+      const btn = document.getElementById('notif-btn');
+      if (perm === 'granted') {
+        notifEnabled = true;
+        btn.textContent = '✅ Alerts ON';
+        btn.className = 'notif-btn granted';
+        sendNotif('🔔 SPM Battle Plan', 'Notifications enabled! You will be alerted at each session transition.');
+      } else {
+        btn.textContent = '❌ Blocked';
+        btn.className = 'notif-btn denied';
+      }
+    });
+  }
+
+  function sendNotif(title, body) {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body, icon: '📚', badge: '📚' });
+    }
+  }
+
+  function checkScheduleNotifs() {
+    if (!notifEnabled) return;
+    const now = new Date();
+    const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+    if (s !== 0) return; // only fire on exact minute
+    const key = `${h}:${m}`;
+    if (key === lastNotifKey) return;
+    const match = SCHEDULE.find(e => e.h === h && e.m === m);
+    if (match) {
+      lastNotifKey = key;
+      sendNotif(match.title, match.body);
+    }
+  }
+
+  // Also notify for Pomodoro — patch into playBeep
+  const _origPlayBeep = playBeep;
+
+  // ── LIVE CLOCK ──
+  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function getSession(h, min) {
+    const t = h * 60 + min;
+    if (t >= 240 && t < 270)  return ['🍳 Light Breakfast & Workout', 'session-rest'];
+    if (t >= 270 && t < 390)  return ['⭐ MORNING STUDY SESSION', 'session-morning'];
+    if (t >= 390 && t < 480)  return ['📚 Post-Study / School Prep', 'session-study'];
+    if (t >= 480 && t < 900)  return ['🏫 School Time', 'session-study'];
+    if (t >= 900 && t < 1080) return ['🏠 After School — Rest / Prep', 'session-rest'];
+    if (t >= 1080 && t < 1110)return ['🌆 EVENING REVIEW SESSION', 'session-evening'];
+    if (t >= 1110 && t < 1260)return ['📖 Homework Time', 'session-study'];
+    return ['🌙 Rest & Sleep', 'session-rest'];
+  }
+
+  function tick() {
+    const now = new Date();
+    const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('ch').textContent = pad(h);
+    document.getElementById('cm').textContent = pad(m);
+    document.getElementById('cs').textContent = pad(s);
+    const dateStr = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    document.getElementById('clock-date').textContent = dateStr;
+    const [label, cls] = getSession(h, m);
+    const el = document.getElementById('clock-session');
+    el.textContent = label;
+    el.className = 'clock-session ' + cls;
+  }
+  tick();
+  setInterval(() => { tick(); checkScheduleNotifs(); }, 1000);
+
+  // ── POMODORO ──
+  const CONFIGS = {
+    h: { focus: 50, brk: 10, totalBlocks: 3, color: 'var(--yellow)', doneCls: 'done-heavy', label: 'HEAVY' },
+    l: { focus: 25, brk:  5, totalBlocks: 2, color: 'var(--blue)',   doneCls: 'done-light', label: 'LIGHT' }
+  };
+
+  const state = {
+    h: { interval: null, running: false, phase: 'focus', block: 0, remaining: 50*60, done: [] },
+    l: { interval: null, running: false, phase: 'focus', block: 0, remaining: 25*60, done: [] }
+  };
+
+  const CIRC = 2 * Math.PI * 88; // 553
+
+  function buildDots(id) {
+    const cfg = CONFIGS[id], s = state[id];
+    const wrap = document.getElementById('dots-' + id);
+    wrap.innerHTML = '';
+    for (let i = 0; i < cfg.totalBlocks; i++) {
+      const d = document.createElement('div');
+      d.className = 'block-dot';
+      if (s.done[i]) d.classList.add(cfg.doneCls);
+      else if (i === s.block && s.running) d.classList.add('active-dot');
+      wrap.appendChild(d);
+    }
+  }
+
+  function updateDisplay(id) {
+    const cfg = CONFIGS[id], s = state[id];
+    const m = Math.floor(s.remaining / 60), sec = s.remaining % 60;
+    const pad = n => String(n).padStart(2,'0');
+    document.getElementById('countdown-' + id).textContent = `${pad(m)}:${pad(sec)}`;
+
+    const total = s.phase === 'focus' ? cfg.focus * 60 : cfg.brk * 60;
+    const offset = CIRC * (1 - s.remaining / total);
+    document.getElementById('ring-' + id).style.strokeDashoffset = offset;
+
+    const phaseEl = document.getElementById('phase-' + id);
+    if (!s.running && s.remaining === cfg.focus * 60) {
+      phaseEl.textContent = 'READY';
+    } else {
+      phaseEl.textContent = s.phase === 'focus'
+        ? `BLOCK ${s.block + 1} — FOCUS`
+        : `BREAK`;
+    }
+
+    buildDots(id);
+  }
+
+  function toggleTimer(id) {
+    const s = state[id];
+    const btn = document.getElementById('btn-' + id);
+    if (s.running) {
+      clearInterval(s.interval);
+      s.running = false;
+      btn.textContent = 'RESUME';
+      btn.classList.remove('running');
+      document.getElementById('msg-' + id).textContent = 'Paused. Press RESUME to continue.';
+    } else {
+      s.running = true;
+      btn.textContent = 'PAUSE';
+      btn.classList.add('running');
+      document.getElementById('msg-' + id).textContent =
+        state[id].phase === 'focus' ? '🔥 Stay locked in. No distractions.' : '☕ Take a real break. Stand up, breathe.';
+      s.interval = setInterval(() => stepTimer(id), 1000);
+    }
+    buildDots(id);
+  }
+
+  function stepTimer(id) {
+    const cfg = CONFIGS[id], s = state[id];
+    s.remaining--;
+    if (s.remaining < 0) {
+      if (s.phase === 'focus') {
+        s.done[s.block] = true;
+        s.phase = 'brk';
+        s.remaining = cfg.brk * 60;
+        document.getElementById('msg-' + id).textContent = '✅ Focus block done! Take your break.';
+        playBeep(id);
+        sendNotif('✅ Focus Block Done!', `Take your ${cfg.brk}-min break. Stand up, breathe, hydrate.`);
+      } else {
+        s.block++;
+        s.phase = 'focus';
+        if (s.block >= cfg.totalBlocks) {
+          clearInterval(s.interval);
+          s.running = false;
+          s.block = cfg.totalBlocks - 1;
+          s.remaining = 0;
+          document.getElementById('btn-' + id).textContent = 'DONE ✓';
+          document.getElementById('btn-' + id).classList.remove('running');
+          document.getElementById('msg-' + id).textContent = '🎯 All blocks complete. Log your mistakes and rest.';
+          sendNotif('🎯 All Pomodoro Blocks Done!', 'Session complete. Update your mistake log now.');
+          updateDisplay(id);
+          return;
+        }
+        s.remaining = cfg.focus * 60;
+        document.getElementById('msg-' + id).textContent = '🔥 Break over. Lock in for next block.';
+        playBeep(id);
+        sendNotif('🔥 Break Over!', 'Lock back in. Next focus block starting now.');
+      }
+    }
+    updateDisplay(id);
+  }
+
+  function resetTimer(id) {
+    const cfg = CONFIGS[id], s = state[id];
+    clearInterval(s.interval);
+    s.running = false;
+    s.phase = 'focus';
+    s.block = 0;
+    s.remaining = cfg.focus * 60;
+    s.done = [];
+    const btn = document.getElementById('btn-' + id);
+    btn.textContent = 'START';
+    btn.classList.remove('running');
+    document.getElementById('ring-' + id).style.strokeDashoffset = 0;
+    document.getElementById('msg-' + id).textContent =
+      id === 'h' ? 'Press START to begin your 50-min focus block.' : 'Press START to begin your 25-min review block.';
+    updateDisplay(id);
+  }
+
+  function playBeep(id) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = id === 'h' ? 880 : 660;
+      o.type = 'sine';
+      g.gain.setValueAtTime(0.3, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      o.start(ctx.currentTime);
+      o.stop(ctx.currentTime + 0.6);
+    } catch(e) {}
+  }
+
+  function switchMode(mode) {
+    document.getElementById('pomo-heavy').classList.toggle('visible', mode === 'heavy');
+    document.getElementById('pomo-light').classList.toggle('visible', mode === 'light');
+    document.querySelectorAll('.pomo-tab').forEach((t, i) => {
+      t.className = 'pomo-tab';
+      if ((i === 0 && mode === 'heavy') || (i === 1 && mode === 'light'))
+        t.classList.add(mode === 'heavy' ? 'active-heavy' : 'active-light');
+    });
+  }
+
+  // Init
+  updateDisplay('h');
+  updateDisplay('l');
+</script>
+</div>
+</body>
+</html>
