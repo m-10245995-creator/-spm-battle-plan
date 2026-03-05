@@ -1483,6 +1483,16 @@
   // Init
   updateDisplay('h');
   updateDisplay('l');
+
+  // Auto-detect notification permission on load
+  window.addEventListener('load', () => {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      notifEnabled = true;
+      const btn = document.getElementById('notif-btn');
+      btn.textContent = '✅ Alerts ON';
+      btn.className = 'notif-btn granted';
+    }
+  });
 </script>
 </div>
 </body>
