@@ -516,6 +516,177 @@
     margin-bottom: 14px;
   }
 
+  /* ── DAILY CHECKLIST ── */
+  .checklist-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .checklist-warning {
+    background: rgba(255,90,54,0.1);
+    border-bottom: 1px solid rgba(255,90,54,0.3);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--red);
+    font-weight: 600;
+    animation: pulse-warn 1.5s ease infinite;
+  }
+
+  @keyframes pulse-warn {
+    0%,100% { background: rgba(255,90,54,0.08); }
+    50%      { background: rgba(255,90,54,0.18); }
+  }
+
+  .warn-icon { font-size: 18px; flex-shrink: 0; }
+
+  .cl-group {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+  }
+
+  .cl-group:last-of-type { border-bottom: none; }
+
+  .cl-group-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cl-group-title.yellow { color: var(--yellow); }
+  .cl-group-title.blue   { color: var(--blue); }
+  .cl-group-title.green  { color: var(--green); }
+
+  .cl-time {
+    color: var(--text-muted);
+    font-size: 10px;
+    margin-left: auto;
+  }
+
+  .cl-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: all 0.2s;
+  }
+
+  .cl-item:last-child { border-bottom: none; }
+  .cl-item:hover { padding-left: 4px; }
+
+  .cl-item input[type="checkbox"] { display: none; }
+
+  .cl-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: var(--surface2);
+  }
+
+  .cl-item input:checked ~ .cl-box {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .cl-item input:checked ~ .cl-box::after {
+    content: '✓';
+    color: #000;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .cl-label {
+    font-size: 13.5px;
+    color: var(--text);
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+
+  .cl-item input:checked ~ .cl-box ~ .cl-label {
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .cl-due {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: 6px;
+    background: var(--surface2);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .cl-due.overdue { color: var(--red); border-color: rgba(255,90,54,0.3); background: rgba(255,90,54,0.08); }
+
+  .cl-progress-wrap {
+    padding: 16px 20px 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cl-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 8px;
+  }
+
+  #cl-percent { color: var(--green); font-weight: 700; }
+
+  .cl-progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .cl-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--green), var(--accent));
+    border-radius: 10px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .cl-reset-btn {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 12px 20px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cl-reset-btn:hover { color: var(--text); border-color: var(--text-muted); }
+
   /* ── POMODORO TIMER ── */
   .pomo-section {
     margin-bottom: 60px;
@@ -918,6 +1089,49 @@
     </div>
   </section>
 
+  <!-- ── DAILY CHECKLIST ── -->
+  <section id="checklist-section">
+    <div class="section-title">
+      Daily Checklist
+      <span id="checklist-date-label" style="font-size:13px;font-weight:400;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-left:auto"></span>
+    </div>
+
+    <div class="checklist-wrap">
+
+      <div class="checklist-warning" id="checklist-warning" style="display:none">
+        <span class="warn-icon">⚠️</span>
+        <span id="warn-msg"></span>
+      </div>
+
+      <div class="cl-group">
+        <div class="cl-group-title yellow">⭐ Morning Session <span class="cl-time">4:30 – 6:30 AM</span></div>
+        <label class="cl-item"><input type="checkbox" id="cl-breakfast" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">🍳 Light Breakfast & Workout <span class="cl-due">done by 4:30 AM</span></span></label>
+        <label class="cl-item"><input type="checkbox" id="cl-priority" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">⭐ Priority Subject — 2 blocks (50+50 min) <span class="cl-due">done by 6:10 AM</span></span></label>
+        <label class="cl-item"><input type="checkbox" id="cl-secondary" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">📘 Secondary Subject — 1 block (50 min) <span class="cl-due">done by 6:30 AM</span></span></label>
+      </div>
+
+      <div class="cl-group">
+        <div class="cl-group-title blue">🌆 Evening Session <span class="cl-time">6:00 – 7:15 PM</span></div>
+        <label class="cl-item"><input type="checkbox" id="cl-mistakelog" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">📝 Updated Mistake Log with teacher feedback <span class="cl-due">by 6:15 PM</span></span></label>
+        <label class="cl-item"><input type="checkbox" id="cl-flashcards" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">🃏 Reviewed slides, diagrams & flashcards <span class="cl-due">by 7:00 PM</span></span></label>
+        <label class="cl-item"><input type="checkbox" id="cl-weakpoints" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">🎯 Reinforced weak points <span class="cl-due">by 7:15 PM</span></span></label>
+      </div>
+
+      <div class="cl-group">
+        <div class="cl-group-title green">✅ General <span class="cl-time">Daily</span></div>
+        <label class="cl-item"><input type="checkbox" id="cl-water" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">💧 Drank enough water today</span></label>
+        <label class="cl-item"><input type="checkbox" id="cl-sleep" onchange="saveChecklist()"><span class="cl-box"></span><span class="cl-label">😴 In bed by 10:00 PM</span></label>
+      </div>
+
+      <div class="cl-progress-wrap">
+        <div class="cl-progress-label"><span>Today's Progress</span><span id="cl-percent">0%</span></div>
+        <div class="cl-progress-bar"><div class="cl-progress-fill" id="cl-fill"></div></div>
+      </div>
+
+      <button class="cl-reset-btn" onclick="resetChecklist()">🔄 Reset for Today</button>
+    </div>
+  </section>
+
   <!-- ── POMODORO TIMER ── -->
   <div class="pomo-section">
     <div class="section-title">Pomodoro Timer</div>
@@ -1244,16 +1458,140 @@
     });
   }
 
+  // ── DAILY CHECKLIST ──
+  const CL_ITEMS = ['cl-breakfast','cl-priority','cl-secondary','cl-mistakelog','cl-flashcards','cl-weakpoints','cl-water','cl-sleep'];
+
+  // Deadlines in minutes from midnight for warning checks
+  const CL_DEADLINES = {
+    'cl-breakfast':  270,  // 4:30 AM
+    'cl-priority':   370,  // 6:10 AM
+    'cl-secondary':  390,  // 6:30 AM
+    'cl-mistakelog': 1095, // 6:15 PM
+    'cl-flashcards': 1140, // 7:00 PM
+    'cl-weakpoints': 1155, // 7:15 PM
+  };
+
+  function getTodayKey() {
+    const d = new Date();
+    return `checklist-${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  }
+
+  function saveChecklist() {
+    const data = {};
+    CL_ITEMS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data[id] = el.checked;
+    });
+    try { localStorage.setItem(getTodayKey(), JSON.stringify(data)); } catch(e) {}
+    updateChecklistUI();
+  }
+
+  function loadChecklist() {
+    try {
+      const saved = localStorage.getItem(getTodayKey());
+      if (saved) {
+        const data = JSON.parse(saved);
+        CL_ITEMS.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && data[id] !== undefined) el.checked = data[id];
+        });
+      }
+    } catch(e) {}
+    updateChecklistUI();
+  }
+
+  function resetChecklist() {
+    CL_ITEMS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.checked = false;
+    });
+    try { localStorage.removeItem(getTodayKey()); } catch(e) {}
+    updateChecklistUI();
+  }
+
+  function updateChecklistUI() {
+    const total = CL_ITEMS.length;
+    const done = CL_ITEMS.filter(id => {
+      const el = document.getElementById(id);
+      return el && el.checked;
+    }).length;
+    const pct = Math.round((done / total) * 100);
+    document.getElementById('cl-percent').textContent = pct + '%';
+    document.getElementById('cl-fill').style.width = pct + '%';
+
+    // Date label
+    const now = new Date();
+    const days2 = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    document.getElementById('checklist-date-label').textContent =
+      days2[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()];
+
+    checkWarnings();
+  }
+
+  function checkWarnings() {
+    const now = new Date();
+    const t = now.getHours() * 60 + now.getMinutes();
+    const warnings = [];
+
+    // Morning items — warn if past 6:30 AM and not checked
+    const morningItems = ['cl-breakfast','cl-priority','cl-secondary'];
+    const morningLabels = { 'cl-breakfast': 'Breakfast & Workout', 'cl-priority': 'Priority Subject', 'cl-secondary': 'Secondary Subject' };
+    morningItems.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.checked && t > CL_DEADLINES[id]) {
+        warnings.push(`${morningLabels[id]} not marked done!`);
+      }
+    });
+
+    // Evening items — warn if past 7:15 PM and not checked
+    const eveningItems = ['cl-mistakelog','cl-flashcards','cl-weakpoints'];
+    const eveningLabels = { 'cl-mistakelog': 'Mistake Log', 'cl-flashcards': 'Flashcard Review', 'cl-weakpoints': 'Weak Points' };
+    eveningItems.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.checked && t > CL_DEADLINES[id]) {
+        warnings.push(`${eveningLabels[id]} not marked done!`);
+      }
+    });
+
+    const warnEl = document.getElementById('checklist-warning');
+    const msgEl = document.getElementById('warn-msg');
+    if (warnings.length > 0) {
+      warnEl.style.display = 'flex';
+      msgEl.textContent = '⚠️ MISSED: ' + warnings.join(' · ');
+      // Send notification if not already sent
+      const warnKey = 'warn-' + warnings.join(',');
+      if (warnKey !== window._lastWarnKey) {
+        window._lastWarnKey = warnKey;
+        sendNotif('⚠️ Checklist Warning!', 'You missed: ' + warnings.join(', ') + ' — mark it done or catch up NOW.');
+      }
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
+
+  // Auto-reset checklist at midnight
+  function checkMidnightReset() {
+    const now = new Date();
+    if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+      resetChecklist();
+    }
+  }
+
   // ── NOTIFICATIONS ──
   const SCHEDULE = [
     { h: 4,  m: 0,  title: '🍳 Wake Up!',               body: 'Time for light breakfast & workout. Fuel up before the grind.' },
     { h: 4,  m: 30, title: '⭐ Morning Study START',      body: 'Lock in. Priority subject — 50 min focus block. No distractions.' },
     { h: 6,  m: 30, title: '📚 Study Session Done',       body: 'Morning study complete. Get ready for school.' },
-    { h: 8,  m: 0,  title: '🏫 School Time',              body: 'Stay sharp in class. Take notes, ask questions.' },
-    { h: 15, m: 0,  title: '🏠 School Done!',             body: 'Back home. Rest up before evening review.' },
+    { h: 7,  m: 0,  title: '🏫 School Time',              body: 'Stay sharp in class. Take notes, ask questions.', notWeekend: true },
+    { h: 8,  m: 0,  title: '📚 Weekend Study Block',      body: 'Start your weekend morning study. Chemistry / Add Maths first!', weekendOnly: true },
+    { h: 12, m: 0,  title: '🕌 Weekend Afternoon',        body: 'Take a proper rest. Eat well, recharge for evening review.', weekendOnly: true },
+    { h: 13, m: 0,  title: '🏠 Friday — School Done!',    body: 'Friday school done at 1PM! Rest up, longer afternoon ahead.', fridayOnly: true },
+    { h: 15, m: 0,  title: '🏠 School Done!',             body: 'Back home. Rest up before evening review.', notFriday: true, notWeekend: true },
+    { h: 15, m: 0,  title: '📖 Weekend Late Study',       body: 'Time for BM / Sejarah / English practice. Keep it focused!', weekendOnly: true },
     { h: 18, m: 0,  title: '🌆 Evening Review — START',   body: 'Update your mistake log. Use slides & flashcards. 30–45 min only.' },
-    { h: 19, m: 15, title: '📖 Homework Time',            body: 'Evening review done. Switch to homework now.' },
-    { h: 21, m: 0,  title: '🌙 Wind Down',                body: 'Homework done. Prepare for sleep. Early rise tomorrow.' },
+    { h: 19, m: 15, title: '📖 Homework Time',            body: 'Evening review done. Switch to homework now.', notWeekend: true },
+    { h: 19, m: 15, title: '😴 Weekend Wind Down',        body: 'Weekend review done. Relax and prepare for sleep.', weekendOnly: true },
+    { h: 21, m: 0,  title: '🌙 Wind Down',                body: 'Prepare for sleep. Early rise tomorrow.' },
     { h: 22, m: 0,  title: '😴 Sleep Now',                body: 'Lights off. Your brain consolidates memory during sleep. Rest is non-negotiable.' },
   ];
 
@@ -1289,10 +1627,20 @@
     if (!notifEnabled) return;
     const now = new Date();
     const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-    if (s !== 0) return; // only fire on exact minute
+    const day = now.getDay();
+    const isFriday = day === 5;
+    const isWeekend = day === 0 || day === 6;
+    if (s !== 0) return;
     const key = `${h}:${m}`;
     if (key === lastNotifKey) return;
-    const match = SCHEDULE.find(e => e.h === h && e.m === m);
+    const match = SCHEDULE.find(e => {
+      if (e.h !== h || e.m !== m) return false;
+      if (e.fridayOnly && !isFriday) return false;
+      if (e.notFriday && isFriday) return false;
+      if (e.weekendOnly && !isWeekend) return false;
+      if (e.notWeekend && isWeekend) return false;
+      return true;
+    });
     if (match) {
       lastNotifKey = key;
       sendNotif(match.title, match.body);
@@ -1308,13 +1656,28 @@
 
   function getSession(h, min) {
     const t = h * 60 + min;
-    if (t >= 240 && t < 270)  return ['🍳 Light Breakfast & Workout', 'session-rest'];
-    if (t >= 270 && t < 390)  return ['⭐ MORNING STUDY SESSION', 'session-morning'];
-    if (t >= 390 && t < 480)  return ['📚 Post-Study / School Prep', 'session-study'];
-    if (t >= 480 && t < 900)  return ['🏫 School Time', 'session-study'];
-    if (t >= 900 && t < 1080) return ['🏠 After School — Rest / Prep', 'session-rest'];
-    if (t >= 1080 && t < 1110)return ['🌆 EVENING REVIEW SESSION', 'session-evening'];
-    if (t >= 1110 && t < 1260)return ['📖 Homework Time', 'session-study'];
+    const day = new Date().getDay(); // 0=Sun, 5=Fri, 6=Sat
+    const isWeekend = day === 0 || day === 6;
+    const isFriday = day === 5;
+    const schoolEnd = isFriday ? 780 : 900; // Friday 1PM, others 3PM
+
+    if (t >= 240 && t < 270)        return ['🍳 Light Breakfast & Workout', 'session-rest'];
+    if (t >= 270 && t < 390)        return ['⭐ MORNING STUDY SESSION', 'session-morning'];
+
+    if (isWeekend) {
+      if (t >= 390 && t < 720)      return ['📚 Weekend Morning Study', 'session-morning'];
+      if (t >= 720 && t < 900)      return ['🕌 Weekend Afternoon — Rest', 'session-rest'];
+      if (t >= 900 && t < 1080)     return ['📖 Weekend Late Study / Review', 'session-study'];
+      if (t >= 1080 && t < 1110)    return ['🌆 EVENING REVIEW SESSION', 'session-evening'];
+      if (t >= 1110 && t < 1260)    return ['😴 Wind Down', 'session-rest'];
+      return ['🌙 Rest & Sleep', 'session-rest'];
+    }
+
+    if (t >= 390 && t < 420)        return ['📚 Post-Study / School Prep', 'session-study'];
+    if (t >= 420 && t < schoolEnd)  return ['🏫 School Time', 'session-study'];
+    if (t >= schoolEnd && t < 1080) return ['🏠 After School — Rest / Prep', 'session-rest'];
+    if (t >= 1080 && t < 1110)      return ['🌆 EVENING REVIEW SESSION', 'session-evening'];
+    if (t >= 1110 && t < 1260)      return ['📖 Homework Time', 'session-study'];
     return ['🌙 Rest & Sleep', 'session-rest'];
   }
 
@@ -1333,7 +1696,10 @@
     el.className = 'clock-session ' + cls;
   }
   tick();
-  setInterval(() => { tick(); checkScheduleNotifs(); }, 1000);
+  setInterval(() => { tick(); checkScheduleNotifs(); checkMidnightReset(); }, 1000);
+
+  // Init checklist
+  loadChecklist();
 
   // ── POMODORO ──
   const CONFIGS = {
