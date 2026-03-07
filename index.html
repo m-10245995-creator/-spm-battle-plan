@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPM Ultimate Battle Plan</title>
 <meta name="description" content="SPM Ultimate Battle Plan — Full week study schedule with Pomodoro timer and session alerts.">
-<meta name="theme-color" content="#c9a050">
+<meta name="theme-color" content="#0a1428">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SPM Plan">
@@ -727,13 +727,13 @@ body::after {
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 9998;
-  background: rgba(7,9,13,0.97);
+  background: rgba(10,20,40,0.97);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-top: 1px solid var(--border2);
+  border-top: 1px solid rgba(59,158,255,0.25);
   display: flex;
   align-items: stretch;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+  box-shadow: 0 -8px 40px rgba(59,158,255,0.12);
   height: 58px;
   overflow: visible;
 }
@@ -748,14 +748,18 @@ body::after {
   padding: 8px 4px 10px;
   border: none;
   background: transparent;
-  color: var(--text3);
+  color: rgba(59,158,255,0.45);
   cursor: pointer;
   border-top: 2px solid transparent;
   transition: all 0.18s;
   position: relative;
 }
-.tb-tab:hover        { color: var(--text2); background: rgba(255,255,255,0.03); }
-.tb-tab.open, .tb-tab.active { border-top-color: var(--gold); color: var(--gold); background: rgba(212,168,75,0.07); }
+.tb-tab:hover { color: rgba(59,158,255,0.75); background: rgba(59,158,255,0.05); }
+.tb-tab.open, .tb-tab.active {
+  border-top-color: #3b9eff;
+  color: #3b9eff;
+  background: rgba(59,158,255,0.08);
+}
 
 .tb-tab-icon { font-size: 18px; line-height: 1; }
 .tb-tab-lbl  {
@@ -770,17 +774,17 @@ body::after {
 .tb-dropdown {
   position: fixed;
   bottom: 62px;
-  background: rgba(10,13,20,0.98);
+  background: rgba(8,16,32,0.99);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--border2);
+  border: 1px solid rgba(59,158,255,0.2);
   border-radius: 12px;
   padding: 6px;
   display: none;
   flex-direction: column;
   gap: 2px;
   min-width: 200px;
-  box-shadow: 0 -4px 32px rgba(0,0,0,0.7);
+  box-shadow: 0 -4px 32px rgba(59,158,255,0.1);
   z-index: 10000;
 }
 .tb-dropdown.open { display: flex; }
@@ -790,9 +794,9 @@ body::after {
   font-size: 9px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--text3);
+  color: rgba(59,158,255,0.5);
   padding: 5px 10px 6px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(59,158,255,0.1);
   margin-bottom: 3px;
 }
 
@@ -814,7 +818,7 @@ body::after {
   font-weight: 400;
   white-space: nowrap;
 }
-.tb-item:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+.tb-item:hover { background: rgba(59,158,255,0.08); color: #3b9eff; }
 .tb-item .ti-icon { font-size: 14px; flex-shrink: 0; }
 
 /* Backdrop */
@@ -2917,7 +2921,7 @@ footer::before {
     short_name: 'SPM Plan',
     description: 'Full week SPM study schedule with Pomodoro timer and session alerts.',
     start_url: '.', display: 'standalone',
-    background_color: '#07090d', theme_color: '#c9a050',
+    background_color: '#07090d', theme_color: '#0a1428',
     icons: [
       { src: genIcon(192), sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
       { src: genIcon(512), sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
