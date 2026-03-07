@@ -370,19 +370,19 @@ body::before {
    MAIN CONTENT AREA
 ═══════════════════════════════════════ */
 #main-content {
-  margin-left: var(--sb-w);
-  margin-top: var(--nav-h);
-  padding: 28px 32px 48px;
-  min-height: calc(100vh - var(--nav-h));
-  transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1), width 0.25s cubic-bezier(0.4,0,0.2,1);
+  padding-left: calc(var(--sb-w) + 32px);
+  padding-right: 32px;
+  padding-top: calc(var(--nav-h) + 28px);
+  padding-bottom: 48px;
+  min-height: 100vh;
+  transition: padding-left 0.25s cubic-bezier(0.4,0,0.2,1);
   position: relative;
   z-index: 1;
-  width: calc(100% - var(--sb-w));
-  max-width: calc(100% - var(--sb-w));
-  overflow-x: hidden;
+  width: 100%;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
-#sidebar.mini ~ #main-content { margin-left: var(--sb-w-mini); width: calc(100% - var(--sb-w-mini)); max-width: calc(100% - var(--sb-w-mini)); }
+#sidebar.mini ~ #main-content { padding-left: calc(var(--sb-w-mini) + 32px); }
 
 /* ═══════════════════════════════════════
    VIEWS
@@ -1100,7 +1100,7 @@ td { padding: 16px 22px; font-size: 17px; vertical-align: middle; }
     transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
   }
   #sidebar.mobile-open { transform: translateX(0); }
-  #main-content { margin-left: 0 !important; padding: 16px 14px 40px; width: 100vw; }
+  #main-content { padding-left: 16px !important; padding-right: 14px !important; padding-top: calc(var(--nav-h) + 16px) !important; padding-bottom: 40px !important; width: 100% !important; }
   .card-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
   .nav-search { max-width: 260px; }
   .nav-logo { min-width: unset; }
