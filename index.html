@@ -157,6 +157,678 @@ body::after {
   z-index: 9999;
 }
 
+/* ═══════════════════════════════════════
+   EXAM COUNTDOWN
+═══════════════════════════════════════ */
+.countdown-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 28px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.countdown-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(232,85,61,0.05) 0%, rgba(212,168,75,0.04) 100%);
+  pointer-events: none;
+}
+.countdown-digits {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  position: relative;
+}
+.cd-unit {
+  text-align: center;
+}
+.cd-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 7vw, 72px);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0 40px var(--gold-glow);
+  display: block;
+}
+.cd-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 4px;
+  display: block;
+}
+.cd-sep {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--border2);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.cd-progress-wrap {
+  position: relative;
+}
+.cd-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 6px;
+}
+.cd-track {
+  height: 5px;
+  background: var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.cd-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--red), var(--gold));
+  border-radius: 10px;
+  transition: width 1s ease;
+}
+.cd-date-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.cd-date-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.cd-date-input:focus { border-color: var(--gold); }
+.cd-set-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold-dim);
+  color: var(--gold);
+  border: 1px solid rgba(212,168,75,0.3);
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cd-set-btn:hover { background: var(--gold-mid); }
+.cd-urgency {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-top: 8px;
+}
+.cd-urgency.danger { background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,85,61,0.3); }
+.cd-urgency.warning { background: rgba(212,168,75,0.1); color: var(--gold); border: 1px solid rgba(212,168,75,0.3); }
+.cd-urgency.safe { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(39,207,192,0.3); }
+
+/* ═══════════════════════════════════════
+   MCQ ACCURACY TRACKER
+═══════════════════════════════════════ */
+.accuracy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.acc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: border-color 0.2s;
+}
+.acc-card:hover { border-color: var(--border2); }
+.acc-subj {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.acc-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+.acc-pct.great { color: var(--teal); }
+.acc-pct.ok    { color: var(--gold); }
+.acc-pct.poor  { color: var(--red); }
+.acc-inputs {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.acc-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 5px 8px;
+  border-radius: 5px;
+  width: 70px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.acc-input:focus { border-color: var(--gold); }
+.acc-slash { color: var(--text3); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.acc-save-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold-dim);
+  color: var(--gold);
+  border: 1px solid rgba(212,168,75,0.3);
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.acc-save-btn:hover { background: var(--gold-mid); }
+.acc-bar-wrap { }
+.acc-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.acc-track {
+  height: 4px;
+  background: var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.acc-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease, background 0.4s;
+}
+.acc-target-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  margin-top: 5px;
+}
+
+/* ═══════════════════════════════════════
+   EXAM PAPER LOG
+═══════════════════════════════════════ */
+.paper-input-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  align-items: flex-end;
+}
+.paper-input, .paper-select {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.paper-input:focus, .paper-select:focus { border-color: var(--gold); }
+.paper-select { cursor: pointer; }
+.paper-add-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.paper-add-btn:hover { background: var(--gold-lite); transform: translateY(-1px); }
+.paper-empty {
+  text-align: center;
+  padding: 28px;
+  color: var(--text3);
+  font-size: 13px;
+  font-style: italic;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.paper-trend {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.paper-trend.up { color: var(--teal); }
+.paper-trend.down { color: var(--red); }
+.paper-trend.flat { color: var(--text3); }
+.paper-delete {
+  background: transparent;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.paper-delete:hover { color: var(--red); background: var(--red-dim); }
+
+/* ═══════════════════════════════════════
+   A+ TARGET CALCULATOR
+═══════════════════════════════════════ */
+.target-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.target-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color 0.2s;
+}
+.target-card:hover { border-color: var(--border2); }
+.target-subj-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.target-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.target-row-lbl {
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 300;
+}
+.target-val-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: 64px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.target-val-input:focus { border-color: var(--gold); }
+.target-gap {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  margin-top: 8px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+.target-gap.achieved { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(39,207,192,0.25); }
+.target-gap.close    { background: rgba(212,168,75,0.1); color: var(--gold); border: 1px solid rgba(212,168,75,0.25); }
+.target-gap.far      { background: var(--red-dim); color: var(--red); border: 1px solid rgba(232,85,61,0.25); }
+.target-calc-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.15s;
+  margin-bottom: 14px;
+}
+.target-calc-btn:hover { background: var(--gold-lite); transform: translateY(-1px); }
+.target-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  display: none;
+}
+.target-summary.visible { display: block; }
+.target-summary h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+/* ═══════════════════════════════════════
+   PUNISHMENT SYSTEM
+═══════════════════════════════════════ */
+.punishment-box {
+  background: linear-gradient(135deg, rgba(232,85,61,0.08), rgba(212,168,75,0.04));
+  border: 1px solid rgba(232,85,61,0.25);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+.punishment-box h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--red);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.punishment-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.punishment-list li {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.punishment-list li::before {
+  content: '⚠';
+  color: var(--red);
+  flex-shrink: 0;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.miss-status {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.miss-count-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--red);
+  line-height: 1;
+}
+.miss-meta { flex: 1; }
+.miss-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 3px;
+}
+.miss-desc { font-size: 13px; color: var(--text2); font-weight: 300; }
+.miss-penalty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(232,85,61,0.3);
+  white-space: nowrap;
+}
+.miss-penalty.clear { background: var(--teal-dim); color: var(--teal); border-color: rgba(39,207,192,0.3); }
+.miss-reset-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--text3);
+  border: 1px solid var(--border2);
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.miss-reset-btn:hover { color: var(--text); border-color: var(--text2); }
+
+/* ═══════════════════════════════════════
+   WEEKLY REVIEW
+═══════════════════════════════════════ */
+.review-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.review-week-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.review-week-lbl::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.review-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.rev-stat {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.rev-stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gold);
+  display: block;
+}
+.rev-stat-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 4px;
+  display: block;
+}
+.review-verdict {
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.review-verdict.pass { background: var(--teal-dim); border: 1px solid rgba(39,207,192,0.2); color: var(--teal); }
+.review-verdict.warn { background: rgba(212,168,75,0.1); border: 1px solid rgba(212,168,75,0.2); color: var(--gold); }
+.review-verdict.fail { background: var(--red-dim); border: 1px solid rgba(232,85,61,0.2); color: var(--red); }
+.review-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.review-list li {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.review-list li .ri { flex-shrink: 0; font-size: 14px; }
+.gen-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--blue-dim);
+  color: var(--blue);
+  border: 1px solid rgba(77,163,245,0.3);
+  padding: 9px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+.gen-btn:hover { background: rgba(77,163,245,0.18); }
+
+/* ═══════════════════════════════════════
+   FIXED BOTTOM TASKBAR
+═══════════════════════════════════════ */
+#taskbar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 9998;
+  background: rgba(7,9,13,0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border2);
+  display: flex;
+  align-items: stretch;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+  height: 58px;
+  overflow: visible;
+}
+
+.tb-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  border-top: 2px solid transparent;
+  transition: all 0.18s;
+  position: relative;
+}
+.tb-tab:hover        { color: var(--text2); background: rgba(255,255,255,0.03); }
+.tb-tab.open, .tb-tab.active { border-top-color: var(--gold); color: var(--gold); background: rgba(212,168,75,0.07); }
+
+.tb-tab-icon { font-size: 18px; line-height: 1; }
+.tb-tab-lbl  {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Dropdown — fixed above taskbar */
+.tb-dropdown {
+  position: fixed;
+  bottom: 62px;
+  background: rgba(10,13,20,0.98);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 200px;
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.7);
+  z-index: 10000;
+}
+.tb-dropdown.open { display: flex; }
+
+.tb-dropdown-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 5px 10px 6px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3px;
+}
+
+.tb-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  border-radius: 7px;
+  transition: all 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.tb-item:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+.tb-item .ti-icon { font-size: 14px; flex-shrink: 0; }
+
+/* Backdrop */
+#tb-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+}
+#tb-backdrop.open { display: block; }
+
+/* Push page content above taskbar */
+.page { padding-bottom: 76px !important; }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -1643,7 +2315,57 @@ footer::before {
 </head>
 <body>
 
-<!-- ══ FIXED SESSION ALERT BANNER ══ -->
+<!-- ══ FIXED BOTTOM TASKBAR ══ -->
+<div id="tb-backdrop" onclick="closeAllDropdowns()"></div>
+
+<!-- Dropdowns live OUTSIDE the nav so they're not clipped -->
+<div class="tb-dropdown" id="dd-daily">
+  <div class="tb-dropdown-title">Daily Use</div>
+  <button class="tb-item" onclick="navTo('sec-clock');closeAllDropdowns()">      <span class="ti-icon">🕐</span> Live Clock &amp; Session</button>
+  <button class="tb-item" onclick="navTo('sec-checklist');closeAllDropdowns()">  <span class="ti-icon">✅</span> Daily Checklist</button>
+  <button class="tb-item" onclick="navTo('sec-pomo');closeAllDropdowns()">       <span class="ti-icon">⏱️</span> Pomodoro Timer</button>
+  <button class="tb-item" onclick="navTo('sec-streak');closeAllDropdowns()">     <span class="ti-icon">🔥</span> Study Streak</button>
+</div>
+
+<div class="tb-dropdown" id="dd-planner">
+  <div class="tb-dropdown-title">Study Planner</div>
+  <button class="tb-item" onclick="navTo('sec-morning');closeAllDropdowns()">    <span class="ti-icon">🌅</span> Weekday Morning</button>
+  <button class="tb-item" onclick="navTo('sec-evening');closeAllDropdowns()">    <span class="ti-icon">🌆</span> Weekday Evening</button>
+  <button class="tb-item" onclick="navTo('sec-schedule');closeAllDropdowns()">   <span class="ti-icon">🗓️</span> Weekend Plan</button>
+  <button class="tb-item" onclick="navTo('sec-countdown');closeAllDropdowns()">  <span class="ti-icon">⏳</span> Exam Countdown</button>
+</div>
+
+<div class="tb-dropdown" id="dd-stats">
+  <div class="tb-dropdown-title">Performance Stats</div>
+  <button class="tb-item" onclick="navTo('sec-score');closeAllDropdowns()">      <span class="ti-icon">📊</span> Weekly Scoreboard</button>
+  <button class="tb-item" onclick="navTo('sec-accuracy');closeAllDropdowns()">   <span class="ti-icon">🎯</span> MCQ Accuracy</button>
+  <button class="tb-item" onclick="navTo('sec-papers');closeAllDropdowns()">     <span class="ti-icon">📋</span> Past Year Papers</button>
+  <button class="tb-item" onclick="navTo('sec-target');closeAllDropdowns()">     <span class="ti-icon">🏆</span> A+ Gap Calculator</button>
+  <button class="tb-item" onclick="navTo('sec-review');closeAllDropdowns()">     <span class="ti-icon">📈</span> Weekly Review</button>
+</div>
+
+<div class="tb-dropdown" id="dd-mastery">
+  <div class="tb-dropdown-title">Subject Mastery</div>
+  <button class="tb-item" onclick="navTo('sec-topics');closeAllDropdowns()">     <span class="ti-icon">📚</span> Topic Tracker</button>
+  <button class="tb-item" onclick="navTo('sec-mistakes');closeAllDropdowns()">   <span class="ti-icon">🔬</span> Mistake Database</button>
+  <button class="tb-item" onclick="navTo('sec-logprotocol');closeAllDropdowns()"><span class="ti-icon">🔁</span> Mistake Log Protocol</button>
+</div>
+
+<div class="tb-dropdown" id="dd-rules">
+  <div class="tb-dropdown-title">System &amp; Discipline</div>
+  <button class="tb-item" onclick="navTo('sec-principles');closeAllDropdowns()"> <span class="ti-icon">💡</span> Key Principles</button>
+  <button class="tb-item" onclick="navTo('sec-rules');closeAllDropdowns()">      <span class="ti-icon">💀</span> Brutal Rules</button>
+  <button class="tb-item" onclick="navTo('sec-punish');closeAllDropdowns()">     <span class="ti-icon">⚖️</span> Punishment System</button>
+  <button class="tb-item" onclick="window.scrollTo({top:0,behavior:'smooth'});closeAllDropdowns()"><span class="ti-icon">⬆️</span> Back to Top</button>
+</div>
+
+<nav id="taskbar">
+  <button class="tb-tab" id="tab-daily"   onclick="toggleDropdown('dd-daily','tab-daily')">  <span class="tb-tab-icon">⏰</span><span class="tb-tab-lbl">Daily</span></button>
+  <button class="tb-tab" id="tab-planner" onclick="toggleDropdown('dd-planner','tab-planner')"><span class="tb-tab-icon">📅</span><span class="tb-tab-lbl">Planner</span></button>
+  <button class="tb-tab" id="tab-stats"   onclick="toggleDropdown('dd-stats','tab-stats')">   <span class="tb-tab-icon">📊</span><span class="tb-tab-lbl">Stats</span></button>
+  <button class="tb-tab" id="tab-mastery" onclick="toggleDropdown('dd-mastery','tab-mastery')"><span class="tb-tab-icon">📚</span><span class="tb-tab-lbl">Mastery</span></button>
+  <button class="tb-tab" id="tab-rules"   onclick="toggleDropdown('dd-rules','tab-rules')">   <span class="tb-tab-icon">⚖️</span><span class="tb-tab-lbl">Rules</span></button>
+</nav>
 <div id="session-alert">
   <div class="alert-left">
     <div class="alert-pulse"></div>
@@ -1662,7 +2384,7 @@ footer::before {
   <h1>Ultimate<span class="italic-gold">Battle Plan</span></h1>
   <p class="header-sub">Full week schedule — Weekdays + Weekends. Core subjects + English, BM &amp; Sejarah. Structured for maximum marks retention.</p>
 
-  <div class="clock-card">
+  <div class="clock-card" id="sec-clock">
     <div class="clock-digits">
       <span id="ch">00</span><span class="colon">:</span><span id="cm">00</span><span class="colon">:</span><span id="cs">00</span>
     </div>
@@ -1687,7 +2409,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">01</span>
     <span class="sec-dot"></span>
-    <h2 class="sec-title">Key Principles</h2>
+    <h2 class="sec-title" id="sec-principles">Key Principles</h2>
   </div>
   <div class="principle-list">
     <div class="p-item"><div class="p-n">1</div><div class="p-body">Weekdays: core subjects (Bio, Add Maths, Maths, Chemistry, Physics) — <strong>1.5 hr priority</strong> + <strong>0.5 hr secondary</strong> every morning.</div></div>
@@ -1703,7 +2425,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">02</span>
     <span class="sec-dot"></span>
-    <h2 class="sec-title">Weekday Morning Schedule</h2>
+    <h2 class="sec-title" id="sec-morning">Weekday Morning Schedule</h2>
   </div>
   <div>
     <span class="time-chip">⏰ 4:00–4:30 AM · 🍳 Breakfast &amp; Workout</span>
@@ -1735,7 +2457,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">03</span>
     <span class="sec-dot teal"></span>
-    <h2 class="sec-title">Weekday Evening Sessions</h2>
+    <h2 class="sec-title" id="sec-evening">Weekday Evening Sessions</h2>
   </div>
   <span class="time-chip" style="color:var(--teal);background:var(--teal-dim);border-color:rgba(39,207,192,0.22);box-shadow:0 0 12px rgba(39,207,192,0.06)">⏰ 6:00–7:15 PM · 30–45 min strictly</span>
   <br><br>
@@ -1752,7 +2474,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">04</span>
     <span class="sec-dot teal"></span>
-    <h2 class="sec-title">Daily Checklist</h2>
+    <h2 class="sec-title" id="sec-checklist">Daily Checklist</h2>
     <span id="checklist-date-label" style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3)"></span>
   </div>
 
@@ -1806,7 +2528,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">05</span>
     <span class="sec-dot"></span>
-    <h2 class="sec-title">Pomodoro Timer</h2>
+    <h2 class="sec-title" id="sec-pomo">Pomodoro Timer</h2>
   </div>
 
   <div class="pomo-tabs">
@@ -1877,7 +2599,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">06</span>
     <span class="sec-dot blue"></span>
-    <h2 class="sec-title">Weekend Full-Length &amp; Other Subjects</h2>
+    <h2 class="sec-title" id="sec-schedule">Weekend Full-Length &amp; Other Subjects</h2>
   </div>
   <div class="table-wrap">
     <table>
@@ -1903,7 +2625,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">07</span>
     <span class="sec-dot purple"></span>
-    <h2 class="sec-title">Mistake Log Protocol</h2>
+    <h2 class="sec-title" id="sec-logprotocol">Mistake Log Protocol</h2>
   </div>
   <div class="codes-list">
     <div class="code-row"><div class="code-key">C</div><div class="code-desc">Concept gap — misunderstood theory or formula</div></div>
@@ -1924,7 +2646,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">08</span>
     <span class="sec-dot red"></span>
-    <h2 class="sec-title">Brutal Rules</h2>
+    <h2 class="sec-title" id="sec-rules">Brutal Rules</h2>
   </div>
   <ul class="rules-list">
     <li><span class="rule-n">01</span>Weekdays = full core subject focus. Zero distractions, zero compromises.</li>
@@ -1953,7 +2675,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">10</span>
     <span class="sec-dot"></span>
-    <h2 class="sec-title">Study Streak</h2>
+    <h2 class="sec-title" id="sec-streak">Study Streak</h2>
   </div>
   <div class="streak-wrap">
     <div class="streak-main">
@@ -1981,7 +2703,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">11</span>
     <span class="sec-dot teal"></span>
-    <h2 class="sec-title">Weekly Performance Scoreboard</h2>
+    <h2 class="sec-title" id="sec-score">Weekly Performance Scoreboard</h2>
   </div>
   <div class="score-wrap">
     <div class="score-week-label" id="score-week-label">—</div>
@@ -2000,7 +2722,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">12</span>
     <span class="sec-dot blue"></span>
-    <h2 class="sec-title">Topic Progress Tracker</h2>
+    <h2 class="sec-title" id="sec-topics">Topic Progress Tracker</h2>
   </div>
   <div class="topic-tabs">
     <button class="topic-tab active" onclick="switchTopic('bio')">🧬 Biology</button>
@@ -2017,7 +2739,7 @@ footer::before {
   <div class="sec-header">
     <span class="sec-num">13</span>
     <span class="sec-dot purple"></span>
-    <h2 class="sec-title">Mistake Database</h2>
+    <h2 class="sec-title" id="sec-mistakes">Mistake Database</h2>
   </div>
   <p style="font-size:13px;color:var(--text2);font-weight:300;margin-bottom:16px">Top repeated mistakes — your exam traps. Eliminate them before exam day.</p>
 
@@ -2039,6 +2761,141 @@ footer::before {
       <thead><tr><th>Subject</th><th>Mistake / Trap</th><th>Fix</th><th>Count</th><th></th></tr></thead>
       <tbody id="mdb-tbody"></tbody>
     </table>
+  </div>
+</div>
+
+<!-- ══ EXAM COUNTDOWN ══ -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-num">14</span>
+    <span class="sec-dot red"></span>
+    <h2 class="sec-title" id="sec-countdown">Exam Countdown</h2>
+  </div>
+  <div class="countdown-hero">
+    <div class="countdown-digits">
+      <div class="cd-unit"><span class="cd-num" id="cd-days">—</span><span class="cd-label">Days</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-hours" style="font-size:clamp(28px,4vw,48px);color:var(--text2)">—</span><span class="cd-label">Hours</span></div>
+      <div class="cd-sep" style="font-size:32px">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-mins" style="font-size:clamp(28px,4vw,48px);color:var(--text2)">—</span><span class="cd-label">Minutes</span></div>
+    </div>
+    <div class="cd-progress-wrap">
+      <div class="cd-progress-label">
+        <span id="cd-prog-start">Start</span>
+        <span id="cd-prog-pct">0% of prep time used</span>
+        <span id="cd-prog-end">SPM</span>
+      </div>
+      <div class="cd-track"><div class="cd-fill" id="cd-fill" style="width:0%"></div></div>
+    </div>
+    <span class="cd-urgency" id="cd-urgency">Set exam date below</span>
+    <div class="cd-date-row" style="margin-top:14px">
+      <input type="date" class="cd-date-input" id="cd-date-input">
+      <button class="cd-set-btn" onclick="setExamDate()">📅 Set Date</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MCQ ACCURACY TRACKER ══ -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-num">15</span>
+    <span class="sec-dot teal"></span>
+    <h2 class="sec-title" id="sec-accuracy">MCQ Accuracy Tracker</h2>
+  </div>
+  <p style="font-size:13px;color:var(--text2);font-weight:300;margin-bottom:16px">Track correct/attempted for MCQ subjects. For Add Maths, enter marks % scored on structured questions. Target: ≥85% (Add Maths: ≥80%)</p>
+  <div class="accuracy-grid" id="accuracy-grid"></div>
+  <button class="cl-reset-btn" onclick="resetAccuracy()">🔄 Reset Accuracy Data</button>
+</div>
+
+<!-- ══ EXAM PAPER SIMULATOR LOG ══ -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-num">16</span>
+    <span class="sec-dot blue"></span>
+    <h2 class="sec-title" id="sec-papers">Exam Paper Simulator Log</h2>
+  </div>
+  <p style="font-size:13px;color:var(--text2);font-weight:300;margin-bottom:16px">Log every past paper attempt. Track if your marks are actually improving over time.</p>
+  <div class="paper-input-row">
+    <select class="paper-select" id="paper-subj">
+      <option value="">Subject</option>
+      <option>Biology</option><option>Add Maths</option><option>Chemistry</option>
+      <option>Physics</option><option>Maths</option><option>English</option><option>BM</option><option>Sejarah</option>
+    </select>
+    <input class="paper-input" id="paper-year" placeholder="Year (e.g. 2023)" style="width:130px">
+    <input class="paper-input" id="paper-paper" placeholder="Paper (e.g. P2)" style="width:100px">
+    <input class="paper-input" id="paper-marks" placeholder="Marks %" type="number" min="0" max="100" style="width:90px">
+    <input class="paper-input" id="paper-time" placeholder="Time (min)" type="number" style="width:100px">
+    <button class="paper-add-btn" onclick="addPaperLog()">+ LOG</button>
+  </div>
+  <div id="paper-empty" class="paper-empty">No papers logged yet. Start with your most recent past year attempt.</div>
+  <div class="table-wrap" id="paper-table-wrap" style="display:none">
+    <table>
+      <thead><tr><th>Subject</th><th>Year</th><th>Paper</th><th>Marks</th><th>Time</th><th>Trend</th><th></th></tr></thead>
+      <tbody id="paper-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ A+ TARGET CALCULATOR ══ -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-num">17</span>
+    <span class="sec-dot"></span>
+    <h2 class="sec-title" id="sec-target">A+ Target Calculator</h2>
+  </div>
+  <p style="font-size:13px;color:var(--text2);font-weight:300;margin-bottom:16px">A+ = 90% and above. Enter your current estimated marks. See exactly how far you are from A+.</p>
+  <div class="target-grid" id="target-grid"></div>
+  <button class="target-calc-btn" onclick="calcTargets()">⚡ Calculate Gap to A+</button>
+  <div class="target-summary" id="target-summary">
+    <h4>📊 Your A+ Gap Report</h4>
+    <div id="target-summary-body"></div>
+  </div>
+</div>
+
+<!-- ══ PUNISHMENT SYSTEM ══ -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-num">18</span>
+    <span class="sec-dot red"></span>
+    <h2 class="sec-title" id="sec-punish">Punishment System</h2>
+  </div>
+  <div class="punishment-box">
+    <h4>⚖️ Consequences of Missing Sessions</h4>
+    <ul class="punishment-list">
+      <li>Miss 1 morning session → Add 25 extra MCQs to next day's session. No exceptions.</li>
+      <li>Miss 2 consecutive days → Full chapter re-read of the missed subject + 50 bonus MCQs.</li>
+      <li>Miss 3 days in a week → Weekend has no rest period. Full catch-up sessions Saturday + Sunday morning.</li>
+      <li>Streak breaks → Streak resets to 0. You must earn it back from scratch.</li>
+      <li>Miss evening review → Review that subject twice the next evening (1 hr instead of 30 min).</li>
+      <li>Miss mistake log update → All uncorrected mistakes count double in your database that week.</li>
+    </ul>
+  </div>
+  <div class="miss-status">
+    <div class="miss-count-big" id="miss-count">0</div>
+    <div class="miss-meta">
+      <div class="miss-label">Missed Sessions This Week</div>
+      <div class="miss-desc" id="miss-desc">You're clean this week. Keep it up.</div>
+    </div>
+    <div class="miss-penalty" id="miss-penalty-badge">✅ Clean</div>
+    <button class="miss-reset-btn" onclick="logMiss()">+ Log a Miss</button>
+    <button class="miss-reset-btn" onclick="clearMisses()">🔄 Reset</button>
+  </div>
+</div>
+
+<!-- ══ WEEKLY REVIEW SUMMARY ══ -->
+<div class="section">
+  <div class="sec-header">
+    <span class="sec-num">19</span>
+    <span class="sec-dot purple"></span>
+    <h2 class="sec-title" id="sec-review">Weekly Review Summary</h2>
+  </div>
+  <p style="font-size:13px;color:var(--text2);font-weight:300;margin-bottom:14px">Auto-generated every Sunday. Honest verdict on your week.</p>
+  <button class="gen-btn" onclick="generateWeeklyReview()">📋 Generate This Week's Review</button>
+  <div class="review-card" id="weekly-review-card" style="display:none">
+    <div class="review-week-lbl" id="review-week-lbl">Week of —</div>
+    <div class="review-stats" id="review-stats"></div>
+    <div class="review-verdict" id="review-verdict"></div>
+    <ul class="review-list" id="review-list"></ul>
   </div>
 </div>
 
@@ -2519,12 +3376,14 @@ function resetStreak() {
    WEEKLY SCOREBOARD
 ════════════════════════════════ */
 const SCORE_METRICS = [
-  { id: 'sessions',   label: 'Morning Sessions',    target: 5   },
-  { id: 'bio_mcq',    label: 'Biology MCQs',         target: 150 },
-  { id: 'add_q',      label: 'Add Maths Questions',  target: 30  },
-  { id: 'chem_mcq',   label: 'Chemistry MCQs',       target: 200 },
-  { id: 'mistakes_l', label: 'Mistakes Logged',      target: 40  },
-  { id: 'mistakes_c', label: 'Mistakes Corrected',   target: 40  },
+  { id: 'sessions',   label: 'Morning Sessions',              target: 5   },
+  { id: 'bio_mcq',    label: 'Biology MCQs',                  target: 150 },
+  { id: 'add_q',      label: 'Add Maths Structured Qs',       target: 30  },
+  { id: 'chem_mcq',   label: 'Chemistry MCQs',                target: 200 },
+  { id: 'phys_mcq',   label: 'Physics MCQs',                  target: 100 },
+  { id: 'add_struct', label: 'Add Maths Section B/C Full Qs', target: 10  },
+  { id: 'mistakes_l', label: 'Mistakes Logged',               target: 40  },
+  { id: 'mistakes_c', label: 'Mistakes Corrected',            target: 40  },
 ];
 
 function getScoreWeekKey() {
@@ -2848,6 +3707,442 @@ function renderMistakeDB() {
     tbody.appendChild(tr);
   });
 }
+/* ════════════════════════════════
+   EXAM COUNTDOWN
+════════════════════════════════ */
+function setExamDate() {
+  const val = document.getElementById('cd-date-input').value;
+  if (!val) { alert('Please pick a date.'); return; }
+  try { localStorage.setItem('spm-exam-date', val); } catch(e) {}
+  tickCountdown();
+}
+
+function tickCountdown() {
+  const stored = (() => { try { return localStorage.getItem('spm-exam-date'); } catch(e) { return null; } })();
+  if (!stored) return;
+  document.getElementById('cd-date-input').value = stored;
+  const exam = new Date(stored + 'T00:00:00');
+  const now  = new Date();
+  const diff = exam - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '0';
+    document.getElementById('cd-hours').textContent = '00';
+    document.getElementById('cd-mins').textContent = '00';
+    document.getElementById('cd-urgency').textContent = '🎓 Exam Day!';
+    document.getElementById('cd-urgency').className = 'cd-urgency danger';
+    return;
+  }
+  const days  = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins  = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('cd-days').textContent  = days;
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+  document.getElementById('cd-mins').textContent  = String(mins).padStart(2,'0');
+
+  // Progress bar — assume 180 days prep window
+  const prepDays = 180;
+  const pct = Math.min(100, Math.round((prepDays - days) / prepDays * 100));
+  document.getElementById('cd-fill').style.width = pct + '%';
+  document.getElementById('cd-prog-pct').textContent = pct + '% of prep time used';
+
+  const urgEl = document.getElementById('cd-urgency');
+  if (days <= 30)       { urgEl.textContent = `🔴 ${days} days left — FINAL SPRINT`; urgEl.className = 'cd-urgency danger'; }
+  else if (days <= 60)  { urgEl.textContent = `🟡 ${days} days left — Accelerate now`; urgEl.className = 'cd-urgency warning'; }
+  else                  { urgEl.textContent = `🟢 ${days} days left — Stay consistent`; urgEl.className = 'cd-urgency safe'; }
+}
+tickCountdown();
+setInterval(tickCountdown, 30000);
+
+/* ════════════════════════════════
+   MCQ ACCURACY TRACKER
+════════════════════════════════ */
+const ACC_SUBJECTS = [
+  { id:'acc-bio',   label:'🧬 Biology',   color:'var(--teal)',   target:85, type:'MCQ' },
+  { id:'acc-chem',  label:'⚗️ Chemistry', color:'var(--red)',    target:85, type:'MCQ' },
+  { id:'acc-phys',  label:'⚡ Physics',   color:'var(--blue)',   target:85, type:'MCQ' },
+  { id:'acc-maths', label:'🔢 Maths',     color:'var(--purple)', target:85, type:'MCQ' },
+  { id:'acc-add',   label:'✏️ Add Maths', color:'var(--gold)',   target:80, type:'Structured (marks %)' },
+];
+
+function getAccData() { try { return JSON.parse(localStorage.getItem('spm-accuracy') || '{}'); } catch(e) { return {}; } }
+function saveAccData(d) { try { localStorage.setItem('spm-accuracy', JSON.stringify(d)); } catch(e) {} }
+
+function renderAccuracy() {
+  const data = getAccData();
+  const grid = document.getElementById('accuracy-grid');
+  grid.innerHTML = '';
+  ACC_SUBJECTS.forEach(s => {
+    const d = data[s.id] || { correct: 0, total: 0 };
+    const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
+    const cls = pct >= 85 ? 'great' : pct >= 60 ? 'ok' : 'poor';
+    const barColor = pct >= 85 ? 'var(--teal)' : pct >= 60 ? 'var(--gold)' : 'var(--red)';
+    const card = document.createElement('div');
+    card.className = 'acc-card';
+    card.innerHTML = `
+      <div class="acc-subj">
+        <div>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">${s.label}</span>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.1em;margin-top:2px">${s.type}</div>
+        </div>
+        <span class="acc-pct ${cls}">${d.total > 0 ? pct + '%' : '—'}</span>
+      </div>
+      <div class="acc-inputs">
+        <input class="acc-input" id="${s.id}-correct" type="number" min="0" placeholder="Correct" value="${d.correct || ''}">
+        <span class="acc-slash">/</span>
+        <input class="acc-input" id="${s.id}-total" type="number" min="0" placeholder="Total" value="${d.total || ''}">
+        <button class="acc-save-btn" onclick="saveAcc('${s.id}')">SAVE</button>
+      </div>
+      <div class="acc-bar-labels">
+        <span>${d.correct} correct of ${d.total}</span>
+        <span>Target: ≥${s.target}%</span>
+      </div>
+      <div class="acc-track">
+        <div class="acc-fill" style="width:${pct}%;background:${barColor}"></div>
+      </div>
+      <div class="acc-target-line">${pct >= s.target ? '✅ Target met!' : pct > 0 ? `Need ${Math.ceil(s.target/100 * d.total) - d.correct} more correct to hit ${s.target}%` : 'Enter your data above'}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function saveAcc(id) {
+  const correct = parseInt(document.getElementById(id+'-correct').value) || 0;
+  const total   = parseInt(document.getElementById(id+'-total').value) || 0;
+  if (total > 0 && correct > total) { alert('Correct cannot exceed total.'); return; }
+  const data = getAccData();
+  data[id] = { correct, total };
+  saveAccData(data);
+  renderAccuracy();
+}
+
+function resetAccuracy() {
+  if (!confirm('Reset all accuracy data?')) return;
+  try { localStorage.removeItem('spm-accuracy'); } catch(e) {}
+  renderAccuracy();
+}
+
+renderAccuracy();
+
+/* ════════════════════════════════
+   EXAM PAPER LOG
+════════════════════════════════ */
+function getPaperLog() { try { return JSON.parse(localStorage.getItem('spm-papers') || '[]'); } catch(e) { return []; } }
+function savePaperLog(d) { try { localStorage.setItem('spm-papers', JSON.stringify(d)); } catch(e) {} }
+
+function addPaperLog() {
+  const subj  = document.getElementById('paper-subj').value;
+  const year  = document.getElementById('paper-year').value.trim();
+  const paper = document.getElementById('paper-paper').value.trim();
+  const marks = parseInt(document.getElementById('paper-marks').value);
+  const time  = parseInt(document.getElementById('paper-time').value) || 0;
+  if (!subj || !year || isNaN(marks)) { alert('Fill in Subject, Year and Marks at minimum.'); return; }
+  if (marks < 0 || marks > 100) { alert('Marks must be 0–100.'); return; }
+  const log = getPaperLog();
+  log.push({ id: Date.now(), subj, year, paper: paper || '—', marks, time, date: new Date().toISOString().split('T')[0] });
+  savePaperLog(log);
+  renderPaperLog();
+  ['paper-year','paper-paper','paper-marks','paper-time'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('paper-subj').value = '';
+}
+
+function deletePaperLog(id) {
+  savePaperLog(getPaperLog().filter(p => p.id !== id));
+  renderPaperLog();
+}
+
+function renderPaperLog() {
+  const log = getPaperLog();
+  document.getElementById('paper-empty').style.display    = log.length ? 'none' : 'block';
+  document.getElementById('paper-table-wrap').style.display = log.length ? 'block' : 'none';
+  if (!log.length) return;
+  const tbody = document.getElementById('paper-tbody');
+  tbody.innerHTML = '';
+  const sorted = log.slice().sort((a,b) => b.id - a.id);
+  sorted.forEach((p, i) => {
+    // Trend: compare with previous entry of same subject
+    const prev = sorted.slice(i+1).find(x => x.subj === p.subj);
+    let trend = '<span class="paper-trend flat">—</span>';
+    if (prev) {
+      const diff = p.marks - prev.marks;
+      trend = diff > 0
+        ? `<span class="paper-trend up">▲ +${diff}%</span>`
+        : diff < 0
+        ? `<span class="paper-trend down">▼ ${diff}%</span>`
+        : `<span class="paper-trend flat">→ same</span>`;
+    }
+    const subjClass = { Biology:'b-bio','Add Maths':'b-add',Chemistry:'b-chem',Physics:'b-phys',Maths:'b-maths',English:'b-eng',BM:'b-bm',Sejarah:'b-sej' }[p.subj] || 'b-core';
+    const gradeColor = p.marks >= 90 ? 'var(--teal)' : p.marks >= 75 ? 'var(--gold)' : 'var(--red)';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="badge ${subjClass}">${p.subj}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:12px">${p.year}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:12px">${p.paper}</td>
+      <td><span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:${gradeColor}">${p.marks}%</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${p.time ? p.time+'m' : '—'}</td>
+      <td>${trend}</td>
+      <td><button class="paper-delete" onclick="deletePaperLog(${p.id})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+renderPaperLog();
+
+/* ════════════════════════════════
+   A+ TARGET CALCULATOR
+════════════════════════════════ */
+const TARGET_SUBJECTS = [
+  { id:'tgt-bio',   label:'🧬 Biology',   color:'var(--teal)' },
+  { id:'tgt-add',   label:'✏️ Add Maths',  color:'var(--gold)' },
+  { id:'tgt-chem',  label:'⚗️ Chemistry',  color:'var(--red)' },
+  { id:'tgt-phys',  label:'⚡ Physics',    color:'var(--blue)' },
+  { id:'tgt-maths', label:'🔢 Maths',      color:'var(--purple)' },
+  { id:'tgt-eng',   label:'📖 English',    color:'var(--gold)' },
+  { id:'tgt-bm',    label:'🖊️ BM',         color:'var(--blue)' },
+  { id:'tgt-sej',   label:'📜 Sejarah',    color:'var(--red)' },
+];
+
+function getTgtData() { try { return JSON.parse(localStorage.getItem('spm-targets') || '{}'); } catch(e) { return {}; } }
+function saveTgtData(d) { try { localStorage.setItem('spm-targets', JSON.stringify(d)); } catch(e) {} }
+
+function renderTargetGrid() {
+  const data = getTgtData();
+  const grid = document.getElementById('target-grid');
+  grid.innerHTML = '';
+  TARGET_SUBJECTS.forEach(s => {
+    const d = data[s.id] || { current: '', trial: '' };
+    const card = document.createElement('div');
+    card.className = 'target-card';
+    card.innerHTML = `
+      <div class="target-subj-lbl" style="color:${s.color}">${s.label}</div>
+      <div class="target-row">
+        <span class="target-row-lbl">Current est. %</span>
+        <input class="target-val-input" id="${s.id}-cur" type="number" min="0" max="100" placeholder="—" value="${d.current}" onchange="autoSaveTgt('${s.id}')">
+      </div>
+      <div class="target-row">
+        <span class="target-row-lbl">Trial exam %</span>
+        <input class="target-val-input" id="${s.id}-trial" type="number" min="0" max="100" placeholder="—" value="${d.trial}" onchange="autoSaveTgt('${s.id}')">
+      </div>
+      <div class="target-gap" id="${s.id}-gap">Enter marks above</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function autoSaveTgt(id) {
+  const data = getTgtData();
+  data[id] = {
+    current: document.getElementById(id+'-cur').value,
+    trial:   document.getElementById(id+'-trial').value
+  };
+  saveTgtData(data);
+}
+
+function calcTargets() {
+  const data = getTgtData();
+  TARGET_SUBJECTS.forEach(s => { autoSaveTgt(s.id); });
+  // Update gap badges on cards
+  TARGET_SUBJECTS.forEach(s => {
+    const d = getTgtData()[s.id] || {};
+    const val = parseFloat(d.current) || parseFloat(d.trial) || null;
+    const el = document.getElementById(s.id + '-gap');
+    if (!el) return;
+    if (val === null) { el.textContent = 'Enter marks above'; el.className = 'target-gap'; return; }
+    const gap = 90 - val;
+    if (gap <= 0)     { el.textContent = `✅ A+ achieved! (${val}%)`; el.className = 'target-gap achieved'; }
+    else if (gap <= 10){ el.textContent = `🟡 Need +${gap}% more`; el.className = 'target-gap close'; }
+    else              { el.textContent = `🔴 Need +${gap}% more`; el.className = 'target-gap far'; }
+  });
+  // Summary
+  const summary = document.getElementById('target-summary');
+  const body = document.getElementById('target-summary-body');
+  const all = getTgtData();
+  let lines = '';
+  let achieved = 0, close = 0, far = 0;
+  TARGET_SUBJECTS.forEach(s => {
+    const d = all[s.id] || {};
+    const val = parseFloat(d.current) || parseFloat(d.trial) || null;
+    if (val === null) return;
+    const gap = 90 - val;
+    if (gap <= 0)      { achieved++; lines += `<div style="font-size:13px;padding:5px 0;border-bottom:1px solid var(--border)">✅ ${s.label} — <strong style="color:var(--teal)">${val}% · A+</strong></div>`; }
+    else if (gap <= 10){ close++;    lines += `<div style="font-size:13px;padding:5px 0;border-bottom:1px solid var(--border)">🟡 ${s.label} — ${val}% · <strong style="color:var(--gold)">Need +${gap}%</strong> to hit A+</div>`; }
+    else               { far++;      lines += `<div style="font-size:13px;padding:5px 0;border-bottom:1px solid var(--border)">🔴 ${s.label} — ${val}% · <strong style="color:var(--red)">Need +${gap}%</strong> to hit A+</div>`; }
+  });
+  body.innerHTML = lines || '<p style="color:var(--text3);font-size:13px">No data entered yet.</p>';
+  summary.classList.add('visible');
+}
+
+renderTargetGrid();
+
+/* ════════════════════════════════
+   PUNISHMENT / MISS TRACKER
+════════════════════════════════ */
+function getMissData() { try { return JSON.parse(localStorage.getItem('spm-misses') || '{"week":"","count":0}'); } catch(e) { return {week:'',count:0}; } }
+function saveMissData(d) { try { localStorage.setItem('spm-misses', JSON.stringify(d)); } catch(e) {} }
+
+function getWeekKey() {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - ((day + 6) % 7));
+  return `${monday.getFullYear()}-${monday.getMonth()}-${monday.getDate()}`;
+}
+
+function renderMisses() {
+  let d = getMissData();
+  if (d.week !== getWeekKey()) { d = { week: getWeekKey(), count: 0 }; saveMissData(d); }
+  const count = d.count;
+  document.getElementById('miss-count').textContent = count;
+  const badge = document.getElementById('miss-penalty-badge');
+  const desc  = document.getElementById('miss-desc');
+  if (count === 0) {
+    badge.textContent = '✅ Clean'; badge.className = 'miss-penalty clear';
+    desc.textContent = 'You\'re clean this week. Stay locked in.';
+  } else if (count === 1) {
+    badge.textContent = '+25 MCQs'; badge.className = 'miss-penalty';
+    desc.textContent = 'Missed 1 session → Add 25 extra MCQs tomorrow.';
+  } else if (count === 2) {
+    badge.textContent = '+50 MCQs + Re-read'; badge.className = 'miss-penalty';
+    desc.textContent = '2 misses → Full chapter re-read + 50 bonus MCQs. No excuses.';
+  } else {
+    badge.textContent = '🔴 No rest weekend'; badge.className = 'miss-penalty';
+    desc.textContent = `${count} misses → Weekend has no rest. Full catch-up sessions required.`;
+  }
+}
+
+function logMiss() {
+  let d = getMissData();
+  if (d.week !== getWeekKey()) d = { week: getWeekKey(), count: 0 };
+  d.count++;
+  saveMissData(d);
+  renderMisses();
+  // Also trigger alarm
+  playAlarm();
+}
+
+function clearMisses() {
+  saveMissData({ week: getWeekKey(), count: 0 });
+  renderMisses();
+}
+
+renderMisses();
+
+/* ════════════════════════════════
+   WEEKLY REVIEW SUMMARY
+════════════════════════════════ */
+function generateWeeklyReview() {
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  const fmt = d => d.toLocaleDateString('en-MY', { day:'numeric', month:'short' });
+  document.getElementById('review-week-lbl').textContent =
+    `Week of ${fmt(weekStart)} – ${fmt(now)}`;
+
+  // Gather data
+  const streakRaw = getStreakData();
+  const streakCurrent = streakRaw.days ? streakRaw.days.length : (streakRaw.current || 0);
+  const streakBest    = streakRaw.best || 0;
+  const score    = (() => { try { return JSON.parse(localStorage.getItem('spm-score') || '{}'); } catch(e){ return {}; } })();
+  const acc      = getAccData();
+  const papers   = getPaperLog();
+  const misses   = getMissData();
+  const topics   = Object.keys(TOPICS).reduce((t, k) => t + (getTopicData(k)||[]).length, 0);
+  const mistakes = getMistakeDB().length;
+
+  // Sessions (from scoreboard morning_sessions)
+  const sessions  = parseInt(score['morning_sessions']?.current) || 0;
+  const tgtSess   = 5;
+  const bioMcq    = parseInt(score['bio_mcq']?.current) || 0;
+  const addQ      = parseInt(score['add_q']?.current) || 0;
+  const missCount = misses.count || 0;
+
+  // Accuracy avg
+  const accVals = Object.values(acc).filter(x => x.total > 0).map(x => Math.round(x.correct/x.total*100));
+  const avgAcc  = accVals.length ? Math.round(accVals.reduce((a,b)=>a+b,0)/accVals.length) : null;
+
+  // Stats block
+  document.getElementById('review-stats').innerHTML = `
+    <div class="rev-stat"><span class="rev-stat-val">${sessions}/${tgtSess}</span><span class="rev-stat-lbl">Sessions</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:var(--teal)">${streakCurrent}</span><span class="rev-stat-lbl">Streak</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:var(--blue)">${bioMcq}</span><span class="rev-stat-lbl">Bio MCQs</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:var(--gold)">${addQ}</span><span class="rev-stat-lbl">Add Maths Qs</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:${avgAcc>=85?'var(--teal)':avgAcc>=60?'var(--gold)':'var(--red)'}">${avgAcc !== null ? avgAcc+'%' : '—'}</span><span class="rev-stat-lbl">Avg Accuracy</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:var(--purple)">${topics}</span><span class="rev-stat-lbl">Topics Done</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:${missCount>0?'var(--red)':'var(--teal)'}">${missCount}</span><span class="rev-stat-lbl">Misses</span></div>
+    <div class="rev-stat"><span class="rev-stat-val" style="color:var(--red)">${mistakes}</span><span class="rev-stat-lbl">Trap Mistakes</span></div>
+  `;
+
+  // Verdict
+  const score_val = sessions*20 + (avgAcc || 0)*0.5 - missCount*15 + (streakCurrent >= 5 ? 10 : 0);
+  const verdictEl = document.getElementById('review-verdict');
+  if (score_val >= 80) {
+    verdictEl.className = 'review-verdict pass';
+    verdictEl.innerHTML = '🏆 <strong>Excellent Week.</strong> You executed the plan. This is what A+ looks like in practice. Keep this standard.';
+  } else if (score_val >= 50) {
+    verdictEl.className = 'review-verdict warn';
+    verdictEl.innerHTML = '⚠️ <strong>Decent but not enough.</strong> You showed up but gaps exist. Identify what broke down and fix it next week.';
+  } else {
+    verdictEl.className = 'review-verdict fail';
+    verdictEl.innerHTML = '🔴 <strong>Weak week.</strong> The results you want require the discipline you didn\'t show this week. Apply punishments and double down.';
+  }
+
+  // Action points
+  const points = [];
+  if (sessions < tgtSess)         points.push({ i:'📅', t:`Only ${sessions}/${tgtSess} morning sessions — missed ${tgtSess-sessions} day(s). Apply punishment protocol.` });
+  if (avgAcc !== null && avgAcc < 85) points.push({ i:'🎯', t:`Average MCQ accuracy ${avgAcc}% — below 85% target. Slow down, focus on quality over quantity.` });
+  if (streakCurrent < 3)         points.push({ i:'🔥', t:'Streak below 3 days — consistency is broken. Rebuild streak as the #1 priority next week.' });
+  if (missCount >= 2)              points.push({ i:'⚖️', t:`${missCount} missed sessions — punishment sessions must be completed before next week starts.` });
+  if (mistakes >= 10)              points.push({ i:'📝', t:`${mistakes} traps in mistake database — spend extra time this weekend on your top 5 repeated mistakes.` });
+  if (topics < 3)                  points.push({ i:'📚', t:'Low chapter progress this week. Prioritise completing at least 2–3 chapters per subject per week.' });
+  if (!points.length)              points.push({ i:'✅', t:'Everything looks strong. Maintain this exact output next week and SPM is yours.' });
+
+  document.getElementById('review-list').innerHTML =
+    points.map(p => `<li><span class="ri">${p.i}</span>${p.t}</li>`).join('');
+
+  document.getElementById('weekly-review-card').style.display = 'block';
+}
+
+function getTodayDateStr() { const d=new Date(); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; }
+
+
+/* ════════════════════════════════
+   TASKBAR NAVIGATION
+════════════════════════════════ */
+function navTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 16;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
+function toggleDropdown(ddId, tabId) {
+  const dd  = document.getElementById(ddId);
+  const tab = document.getElementById(tabId);
+  const isOpen = dd.classList.contains('open');
+  closeAllDropdowns();
+  if (!isOpen) {
+    // Position dropdown centred above its tab
+    const rect = tab.getBoundingClientRect();
+    const ddWidth = 210;
+    let left = rect.left + rect.width / 2 - ddWidth / 2;
+    // Clamp to viewport
+    left = Math.max(8, Math.min(left, window.innerWidth - ddWidth - 8));
+    dd.style.left = left + 'px';
+    dd.classList.add('open');
+    tab.classList.add('open');
+    document.getElementById('tb-backdrop').classList.add('open');
+  }
+}
+
+function closeAllDropdowns() {
+  document.querySelectorAll('.tb-dropdown').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.tb-tab').forEach(t => t.classList.remove('open'));
+  document.getElementById('tb-backdrop').classList.remove('open');
+}
+
+// Close on scroll
+window.addEventListener('scroll', closeAllDropdowns, { passive: true });
+
 </script>
 </body>
 </html>
