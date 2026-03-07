@@ -2748,10 +2748,13 @@ function applyContentPadding() {
   if (!sb || !mc) return;
   if (window.innerWidth <= 900) {
     mc.style.paddingLeft = '16px';
+    mc.style.paddingRight = '14px';
     return;
   }
-  const sbWidth = sb.classList.contains('mini') ? 72 : 240;
+  // Measure actual rendered sidebar width — immune to CSS caching
+  const sbWidth = sb.getBoundingClientRect().width || (sb.classList.contains('mini') ? 72 : 240);
   mc.style.paddingLeft = (sbWidth + 32) + 'px';
+  mc.style.paddingRight = '32px';
 }
 
 function toggleSidebar() {
@@ -2763,7 +2766,9 @@ function toggleSidebar() {
   } else {
     sidebarMini = !sidebarMini;
     sb.classList.toggle('mini', sidebarMini);
-    setTimeout(applyContentPadding, 10);
+    // Call immediately AND after transition completes (250ms)
+    applyContentPadding();
+    setTimeout(applyContentPadding, 260);
   }
 }
 
@@ -3014,6 +3019,7 @@ function setAIStatus(state) {
 
 // On load — check if key already saved
 window.addEventListener('resize', applyContentPadding);
+document.addEventListener('DOMContentLoaded', applyContentPadding);
 window.addEventListener('load', () => {
   applyContentPadding();
   if (getApiKey()) {
