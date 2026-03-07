@@ -2078,7 +2078,7 @@ td { padding: 16px 22px; font-size: 17px; vertical-align: middle; }
   }
   const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
   document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
-  const sw = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>new Response('Offline')))));`;
+  const sw = `self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k)))))});self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));`;
   if ('serviceWorker' in navigator) {
     const swBlob = new Blob([sw], { type: 'application/javascript' });
     navigator.serviceWorker.register(URL.createObjectURL(swBlob), { scope: './' }).catch(() => {});
@@ -2742,6 +2742,18 @@ function getTodayDateStr(){const d=new Date();return `${d.getFullYear()}-${d.get
 ════════════════════════════════ */
 let sidebarMini = false;
 
+function applyContentPadding() {
+  const sb = document.getElementById('sidebar');
+  const mc = document.getElementById('main-content');
+  if (!sb || !mc) return;
+  if (window.innerWidth <= 900) {
+    mc.style.paddingLeft = '16px';
+    return;
+  }
+  const sbWidth = sb.classList.contains('mini') ? 72 : 240;
+  mc.style.paddingLeft = (sbWidth + 32) + 'px';
+}
+
 function toggleSidebar() {
   const sb = document.getElementById('sidebar');
   const overlay = document.getElementById('sb-overlay');
@@ -2751,6 +2763,7 @@ function toggleSidebar() {
   } else {
     sidebarMini = !sidebarMini;
     sb.classList.toggle('mini', sidebarMini);
+    setTimeout(applyContentPadding, 10);
   }
 }
 
@@ -3000,7 +3013,9 @@ function setAIStatus(state) {
 }
 
 // On load — check if key already saved
+window.addEventListener('resize', applyContentPadding);
 window.addEventListener('load', () => {
+  applyContentPadding();
   if (getApiKey()) {
     const hint = document.getElementById('ai-key-hint');
     const inp = document.getElementById('ai-api-key-input');
