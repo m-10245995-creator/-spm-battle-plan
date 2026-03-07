@@ -49,7 +49,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; width: 100%; overflow-x: hidden; }
 
 body {
   background: var(--bg);
@@ -58,6 +58,7 @@ body {
   font-size: 19px;
   line-height: 1.75;
   min-height: 100vh;
+  width: 100%;
   overflow-x: hidden;
 }
 
@@ -282,7 +283,7 @@ body::before {
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none;
-  z-index: 8000;
+  z-index: 100;
   transition: width 0.25s cubic-bezier(0.4,0,0.2,1);
   padding: 10px 0 40px;
 }
@@ -373,11 +374,15 @@ body::before {
   margin-top: var(--nav-h);
   padding: 28px 32px 48px;
   min-height: calc(100vh - var(--nav-h));
-  transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1);
+  transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1), width 0.25s cubic-bezier(0.4,0,0.2,1);
   position: relative;
   z-index: 1;
+  width: calc(100% - var(--sb-w));
+  max-width: calc(100% - var(--sb-w));
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
-#sidebar.mini ~ #main-content { margin-left: var(--sb-w-mini); }
+#sidebar.mini ~ #main-content { margin-left: var(--sb-w-mini); width: calc(100% - var(--sb-w-mini)); max-width: calc(100% - var(--sb-w-mini)); }
 
 /* ═══════════════════════════════════════
    VIEWS
@@ -594,7 +599,7 @@ body::before {
 .badge-red    { background: var(--red-dim);   color: var(--red);    border-color: rgba(232,85,61,0.3); }
 
 /* ── Section View ── */
-.section-view-wrap { animation: fadeUp 0.3s ease; }
+.section-view-wrap { animation: fadeUp 0.3s ease; width: 100%; max-width: 100%; box-sizing: border-box; padding: 0; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
 .back-btn {
@@ -1095,7 +1100,7 @@ td { padding: 16px 22px; font-size: 17px; vertical-align: middle; }
     transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
   }
   #sidebar.mobile-open { transform: translateX(0); }
-  #main-content { margin-left: 0 !important; padding: 16px 14px 40px; }
+  #main-content { margin-left: 0 !important; padding: 16px 14px 40px; width: 100vw; }
   .card-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
   .nav-search { max-width: 260px; }
   .nav-logo { min-width: unset; }
@@ -1118,6 +1123,9 @@ td { padding: 16px 22px; font-size: 17px; vertical-align: middle; }
   border: 1px solid rgba(168,125,232,0.25);
   border-radius: 14px;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .ai-panel-header {
   display: flex; align-items: center; gap: 12px;
