@@ -1961,7 +1961,7 @@ body {
 
   <!-- ⑤ AI MENTOR -->
   <div class="view" id="view-ai">
-    <div class="page-title">AI Study Mentor <span style="font-size:11px;color:var(--ok);background:rgba(168,216,110,0.1);padding:2px 8px;border-radius:4px;vertical-align:middle">v9-GEMINI</span></div>
+    <div class="page-title">AI Study Mentor <span style="font-size:11px;color:var(--ok);background:rgba(168,216,110,0.1);padding:2px 8px;border-radius:4px;vertical-align:middle">v10-GROQ</span></div>
     <div class="page-sub">Powered by Google Gemini (free) — reads your real study stats</div>
     <div class="ai-grid">
       <div class="ai-chat-card">
@@ -1995,16 +1995,17 @@ body {
 
       <div class="ai-sidebar">
         <div class="ai-key-card">
-          <div class="card-head"><div class="card-title">Gemini API Key <span style="font-size:10px;color:var(--ok);background:rgba(168,216,110,0.1);padding:2px 7px;border-radius:4px;margin-left:6px">FREE</span></div></div>
+          <div class="card-head"><div class="card-title">Groq API Key <span style="font-size:10px;color:var(--ok);background:rgba(168,216,110,0.1);padding:2px 7px;border-radius:4px;margin-left:6px">FREE</span></div></div>
           <div class="card-body">
             <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">
               Get a free key at<br>
-              <a href="https://aistudio.google.com" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">aistudio.google.com</a>
-              → Get API key → Create API key
+              <a href="https://console.groq.com" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">console.groq.com</a>
+              → Sign up → API Keys → Create API key<br>
+              <span style="color:var(--ok)">✓ Use any email · No credit card</span>
             </div>
-            <input id="ai-key-input" class="input" type="password" placeholder="AIza... paste here" style="margin-bottom:8px">
+            <input id="ai-key-input" class="input" type="password" placeholder="gsk_... paste here" style="margin-bottom:8px">
             <button class="btn btn-primary btn-sm" onclick="saveApiKey()">Save Key</button>
-            <div style="font-size:11px;color:var(--text3);margin-top:8px">Free tier · No credit card needed · Saved locally only.</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:8px">Free tier · No credit card · Any email · Saved locally only.</div>
             <div style="font-size:11px;margin-top:4px" id="ai-status-detail"></div>
           </div>
         </div>
@@ -2918,15 +2919,15 @@ let aiChatActive = false;
 
 function saveApiKey() {
   const val = document.getElementById('ai-key-input').value.trim();
-  if (!val.startsWith('AIza')) { alert('Gemini key must start with AIza — get yours free at aistudio.google.com'); return; }
-  localStorage.setItem('spm-gemini-key', val);
+  if (!val.startsWith('gsk_')) { alert('Groq key must start with gsk_ — get yours free at console.groq.com'); return; }
+  localStorage.setItem('spm-ai-key', val);
   document.getElementById('ai-key-input').value = '';
   const d = document.getElementById('ai-status-detail');
   if (d) { d.textContent = 'Key saved ✓'; d.style.color = 'var(--ok)'; }
 }
 
 function getApiKey() {
-  return localStorage.getItem('spm-gemini-key') || null;
+  return localStorage.getItem('spm-ai-key') || null;
 }
 
 function collectStats() {
@@ -2998,33 +2999,32 @@ async function sendNewChat() {
 
 async function quickAI(msg) { await doAIChat(msg); }
 
-async function callGemini(key, prompt, maxTokens) {
-  const models = ['gemini-1.5-flash', 'gemini-pro', 'gemini-1.0-pro'];
-  for (const model of models) {
-    try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
-        {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            contents: [{role:'user', parts:[{text: prompt}]}],
-            generationConfig: {maxOutputTokens: maxTokens || 400, temperature: 0.7}
-          })
-        }
-      );
-      const data = await res.json();
-      if (data.error) { console.warn(model + ' failed:', data.error.message); continue; }
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (text) return text;
-    } catch(e) { console.warn(model + ' threw:', e.message); }
+async function callGroq(key, prompt, maxTokens) {
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages: [{role: 'user', content: prompt}],
+        max_tokens: maxTokens || 400,
+        temperature: 0.7
+      })
+    });
+    const data = await res.json();
+    if (data.error) return '⚠ Error: ' + data.error.message;
+    return data.choices?.[0]?.message?.content || '⚠ No response received.';
+  } catch(e) {
+    return '⚠ Network error: ' + e.message;
   }
-  return '⚠ All Gemini models failed. Your school Google account may have AI APIs restricted. Try signing up at aistudio.google.com with a personal Gmail instead.';
 }
 
 async function doAIChat(msg) {
   const key = getApiKey();
-  if (!key) { appendAIMsg('assistant', '⚠ Please save your free Gemini API key first (right panel). Get it free at aistudio.google.com'); return; }
+  if (!key) { appendAIMsg('assistant', '⚠ Please save your free Groq API key first (right panel). Get it free at console.groq.com'); return; }
   if (aiChatActive) return;
   aiChatActive = true;
   appendAIMsg('user', msg);
@@ -3032,7 +3032,7 @@ async function doAIChat(msg) {
   document.getElementById('ai-status-txt').textContent = 'Thinking...';
   document.getElementById('ai-dot').style.background = 'var(--warn)';
   try {
-    const reply = await callGemini(key, buildAISystem() + '\n\nStudent: ' + msg + '\n\nMentor:', 400);
+    const reply = await callGroq(key, buildAISystem() + '\n\nStudent: ' + msg + '\n\nMentor:', 400);
     removeTyping();
     appendAIMsg('assistant', reply);
     aiChatHistory.push({role:'user', msg}, {role:'assistant', msg: reply});
@@ -3053,7 +3053,7 @@ async function generateAIPlanNew() {
   const out = document.getElementById('ai-plan-out');
   if (!key) { out.textContent = '⚠ Save your free Gemini API key first.'; out.classList.remove('empty'); return; }
   out.textContent = 'Generating...'; out.classList.remove('empty');
-  const reply = await callGemini(key, buildAISystem() + '\n\nCreate a detailed time-blocked study plan for today. Include specific subjects, question counts, and times. Format it cleanly.', 500);
+  const reply = await callGroq(key, buildAISystem() + '\n\nCreate a detailed time-blocked study plan for today. Include specific subjects, question counts, and times. Format it cleanly.', 500);
   out.textContent = reply;
 }
 
