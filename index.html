@@ -1978,7 +1978,7 @@ body {
         <div class="ai-log" id="ai-chat-log">
           <div class="ai-msg-row">
             <div class="ai-msg-icon ai-icon">🤖</div>
-            <div class="ai-bubble ai">Hi! I'm your SPM Study Mentor. I can see your accuracy, streak, mistakes, and tasks. Ask me anything — I'll give you honest, data-driven advice. Save your Anthropic API key on the right to get started.</div>
+            <div class="ai-bubble ai">Hi! I'm your SPM Study Mentor powered by Gemini (free!). I can see your accuracy, streak, mistakes, and tasks. Ask me anything — I'll give you honest, data-driven advice. Save your free Gemini API key on the right to get started.</div>
           </div>
         </div>
         <div class="ai-quick-row">
@@ -1995,11 +1995,16 @@ body {
 
       <div class="ai-sidebar">
         <div class="ai-key-card">
-          <div class="card-head"><div class="card-title">Anthropic API Key</div></div>
+          <div class="card-head"><div class="card-title">Gemini API Key <span style="font-size:10px;color:var(--ok);background:rgba(168,216,110,0.1);padding:2px 7px;border-radius:4px;margin-left:6px">FREE</span></div></div>
           <div class="card-body">
-            <input id="ai-key-input" class="input" type="password" placeholder="sk-ant-... paste here" style="margin-bottom:8px">
+            <div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.6">
+              Get a free key at<br>
+              <a href="https://aistudio.google.com" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">aistudio.google.com</a>
+              → Get API key → Create API key
+            </div>
+            <input id="ai-key-input" class="input" type="password" placeholder="AIza... paste here" style="margin-bottom:8px">
             <button class="btn btn-primary btn-sm" onclick="saveApiKey()">Save Key</button>
-            <div style="font-size:11px;color:var(--text3);margin-top:8px">Saved locally only. Never sent anywhere except Anthropic.</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:8px">Free tier · No credit card needed · Saved locally only.</div>
             <div style="font-size:11px;margin-top:4px" id="ai-status-detail"></div>
           </div>
         </div>
@@ -2911,31 +2916,17 @@ Next week target: ${Math.min(100, Math.round(avgAcc) + 5)}% average.`;
 let aiChatHistory = [];
 let aiChatActive = false;
 
-const KEY_SALT = 'spm-bp-2026-salt';
-function obfuscate(str) {
-  return btoa(str.split('').map((c,i)=>String.fromCharCode(c.charCodeAt(0)^KEY_SALT.charCodeAt(i%KEY_SALT.length))).join(''));
-}
-function deobfuscate(str) {
-  try{return atob(str).split('').map((c,i)=>String.fromCharCode(c.charCodeAt(0)^KEY_SALT.charCodeAt(i%KEY_SALT.length))).join('');}catch{return '';}
-}
-
 function saveApiKey() {
   const val = document.getElementById('ai-key-input').value.trim();
-  if (!val.startsWith('sk-ant-')) { alert('Key must start with sk-ant-'); return; }
-  localStorage.setItem('spm-ai-key', obfuscate(val));
+  if (!val.startsWith('AIza')) { alert('Gemini key must start with AIza — get yours free at aistudio.google.com'); return; }
+  localStorage.setItem('spm-gemini-key', val);
   document.getElementById('ai-key-input').value = '';
   const d = document.getElementById('ai-status-detail');
-  if (d) d.textContent = 'Key saved ✓';
-  d.style.color = 'var(--ok)';
+  if (d) { d.textContent = 'Key saved ✓'; d.style.color = 'var(--ok)'; }
 }
 
 function getApiKey() {
-  const raw = localStorage.getItem('spm-ai-key');
-  if (!raw) return null;
-  const dec = deobfuscate(raw);
-  if (dec.startsWith('sk-ant-')) return dec;
-  if (raw.startsWith('sk-ant-')) return raw;
-  return null;
+  return localStorage.getItem('spm-gemini-key') || null;
 }
 
 function collectStats() {
@@ -3009,42 +3000,48 @@ async function quickAI(msg) { await doAIChat(msg); }
 
 async function doAIChat(msg) {
   const key = getApiKey();
-  if (!key) { appendAIMsg('assistant', '⚠ Please save your Anthropic API key first (right panel).'); return; }
+  if (!key) { appendAIMsg('assistant', '⚠ Please save your free Gemini API key first (right panel). Get it free at aistudio.google.com'); return; }
   if (aiChatActive) return;
   aiChatActive = true;
   appendAIMsg('user', msg);
-  aiChatHistory.push({role:'user', content:msg});
+  aiChatHistory.push({role:'user', parts:[{text:msg}]});
   showTyping();
   document.getElementById('ai-status-txt').textContent = 'Thinking...';
   document.getElementById('ai-dot').style.background = 'var(--warn)';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 400,
-        system: buildAISystem(),
-        messages: aiChatHistory.slice(-8)
-      })
-    });
+    const systemPrompt = buildAISystem();
+    const contents = [
+      {role:'user', parts:[{text: systemPrompt + '\n\nStudent message: ' + msg}]},
+      ...aiChatHistory.slice(1)
+    ];
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+      {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          contents: [{
+            role: 'user',
+            parts: [{text: systemPrompt + '\n\nStudent: ' + msg}]
+          }],
+          generationConfig: {maxOutputTokens: 400, temperature: 0.7}
+        })
+      }
+    );
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'No response. Check your API key.';
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text
+      || data.error?.message
+      || 'No response received. Check your API key.';
     removeTyping();
     appendAIMsg('assistant', reply);
-    aiChatHistory.push({role:'assistant', content:reply});
+    aiChatHistory.push({role:'model', parts:[{text:reply}]});
     if (aiChatHistory.length > 16) aiChatHistory = aiChatHistory.slice(-16);
     document.getElementById('ai-status-txt').textContent = 'Ready';
     document.getElementById('ai-dot').style.background = 'var(--accent)';
   } catch(e) {
     removeTyping();
-    appendAIMsg('assistant', `Error: ${e.message}. Make sure you're using the GitHub Pages URL, not a local file.`);
+    appendAIMsg('assistant', `Error: ${e.message}`);
     document.getElementById('ai-status-txt').textContent = 'Error';
     document.getElementById('ai-dot').style.background = 'var(--err)';
   }
@@ -3054,20 +3051,22 @@ async function doAIChat(msg) {
 async function generateAIPlanNew() {
   const key = getApiKey();
   const out = document.getElementById('ai-plan-out');
-  if (!key) { out.textContent = '⚠ Save your API key first.'; out.classList.remove('empty'); return; }
+  if (!key) { out.textContent = '⚠ Save your free Gemini API key first.'; out.classList.remove('empty'); return; }
   out.textContent = 'Generating...'; out.classList.remove('empty');
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body: JSON.stringify({
-        model:'claude-haiku-4-5-20251001', max_tokens:500,
-        system: buildAISystem(),
-        messages:[{role:'user',content:'Create a detailed time-blocked study plan for today. Include specific subjects, question counts, and times. Format it cleanly.'}]
-      })
-    });
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents:[{role:'user', parts:[{text: buildAISystem() + '\n\nCreate a detailed time-blocked study plan for today. Include specific subjects, question counts, and times. Format it cleanly.'}]}],
+          generationConfig:{maxOutputTokens:500, temperature:0.7}
+        })
+      }
+    );
     const d = await res.json();
-    out.textContent = d.content?.[0]?.text || 'No plan generated.';
+    out.textContent = d.candidates?.[0]?.content?.parts?.[0]?.text || d.error?.message || 'No plan generated.';
   } catch(e) { out.textContent = `Error: ${e.message}`; }
 }
 
